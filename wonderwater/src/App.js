@@ -6,6 +6,8 @@ import Register from './user/Register';
 import Login from './user/Login';
 import Home from './Home';
 import AddWaterBody from './waterbodies/AddWaterBody';
+import WaterBodiesIndex from './waterbodies/WaterBodiesIndex';
+import EditWaterBody from './waterbodies/EditWaterBody';
 
 export default class App extends Component {
 
@@ -18,7 +20,8 @@ export default class App extends Component {
       userData: null,
       message: null,
       messageType: null,
-      redirect: null
+      redirect: null,
+      editWaterBody: null
     }
   }
 
@@ -69,12 +72,12 @@ export default class App extends Component {
           let userDataTemp = {};
           axios.get(`wonderwater/user/userInfo?email=${user.sub}`).then(response => {
             console.log(response);
-            if(response.data != null){
-              userDataTemp = {...response.data};
+            if (response.data != null) {
+              userDataTemp = { ...response.data };
               console.log("user data is")
               console.log(userDataTemp)
               this.setState({
-                userData: {...userDataTemp}
+                userData: { ...userDataTemp }
               })
             }
           }).catch(error => {
@@ -127,6 +130,27 @@ export default class App extends Component {
       })
   }
 
+  editWaterBodyHandler = (waterBody) => {
+    axios.put("/wonderwater/waterbody/edit", waterBody, {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token")
+      }
+    })
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  editListener = (waterBody) => {
+    this.setState({
+      editWaterBody: waterBody,
+      redirect: "/waterbody/edit"
+    })
+  }
+
   render() {
     return (
       <div>
@@ -136,18 +160,23 @@ export default class App extends Component {
             <div>
               <Link to="/">Home</Link>{' '}
               <Link to="/waterbody/add">Add Water Body</Link>{' '}
+              <Link to="/waterbody/index">Water Bodies</Link>{' '}
               <Link to="/logout" onClick={this.logoutHandler}>Logout</Link>
 
               <Route exact path="/" component={Home} />
               <Route path="/waterbody/add" component={() => <AddWaterBody user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
+              <Route path="/waterbody/edit" component={() => <EditWaterBody user={this.state.userData} waterBody={this.state.editWaterBody} editWaterBodyHandler={this.editWaterBodyHandler} />} />
+              <Route path="/waterbody/index" component={() => <WaterBodiesIndex editListener={this.editListener} isAuth={this.state.isAuth} userData={this.state.userData} />} />
             </div>
           ) : (
               <div>
                 <Link to="/">Home</Link>{' '}
+                <Link to="/waterbody/index">Water Bodies</Link>{' '}
                 <Link to="/register">Register</Link>{' '}
                 <Link to="/login">Login</Link>
 
                 <Route exact path="/" component={Home} />
+                <Route path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />
                 <Route path="/register" component={() => <Register registerHandler={this.registerHandler} />} />
                 <Route path="/login" component={() => <Login loginHandler={this.loginHandler} />} />
               </div>
