@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import { decode } from "jsonwebtoken";
 import axios from 'axios';
 import Register from './user/Register';
 import Login from './user/Login';
 import Home from './Home';
+import AddWaterBody from './waterbodies/AddWaterBody';
 
 export default class App extends Component {
 
@@ -68,7 +69,14 @@ export default class App extends Component {
           let userDataTemp = {};
           axios.get(`wonderwater/user/userInfo?email=${user.sub}`).then(response => {
             console.log(response);
-            userDataTemp = response.data;
+            if(response.data != null){
+              userDataTemp = {...response.data};
+              console.log("user data is")
+              console.log(userDataTemp)
+              this.setState({
+                userData: {...userDataTemp}
+              })
+            }
           }).catch(error => {
             console.log(error);
           })
@@ -76,9 +84,9 @@ export default class App extends Component {
           this.setState({
             isAuth: true,
             user: user,
-            userData: userDataTemp,
             message: "Successfully loged in!",
-            messageType: "success"
+            messageType: "success",
+            redirect: "/"
           })
         }
         else {
@@ -105,26 +113,45 @@ export default class App extends Component {
     })
   }
 
+  addWaterBodyHandler = (waterBody) => {
+    axios.post("/wonderwater/waterbody/add", waterBody, {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token")
+      }
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+
   render() {
     return (
       <div>
         <Router>
+          {this.state.redirect ? <Redirect to={this.state.redirect} /> : null}
           {this.state.isAuth ? (
             <div>
               <Link to="/">Home</Link>{' '}
+              <Link to="/waterbody/add">Add Water Body</Link>{' '}
               <Link to="/logout" onClick={this.logoutHandler}>Logout</Link>
+
+              <Route exact path="/" component={Home} />
+              <Route path="/waterbody/add" component={() => <AddWaterBody user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
             </div>
           ) : (
-            <div>
-              <Link to="/">Home</Link>{' '}
-              <Link to="/register">Register</Link>{' '}
-              <Link to="/login">Login</Link>
-            </div>
-          ) }
+              <div>
+                <Link to="/">Home</Link>{' '}
+                <Link to="/register">Register</Link>{' '}
+                <Link to="/login">Login</Link>
 
-          <Route exact path="/" component={Home} />
-          <Route path="/register" component={() => <Register registerHandler={this.registerHandler} />} />
-          <Route path="/login" component={() => <Login loginHandler={this.loginHandler} />} />
+                <Route exact path="/" component={Home} />
+                <Route path="/register" component={() => <Register registerHandler={this.registerHandler} />} />
+                <Route path="/login" component={() => <Login loginHandler={this.loginHandler} />} />
+              </div>
+            )}
         </Router>
       </div>
     )

@@ -20,10 +20,10 @@ export default class Login extends Component {
     }
 
     loginHandler = (event) => {
-        event.preventDefault()
+        event.preventDefault();
         this.props.loginHandler(this.state.userInfo);
+        event.target.reset();
     }
-
 
     render() {
         return (

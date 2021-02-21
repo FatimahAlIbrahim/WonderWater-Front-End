@@ -31,7 +31,13 @@ export default class Register extends Component {
 
     registerHandler = (event) => {
         event.preventDefault()
-        this.props.registerHandler(this.state.userInfo);
+        if(this.state.userInfo.password !== this.state.userInfo.cpassword){
+            console.log("password and confirm password must be equal")
+        }
+        else{
+           this.props.registerHandler(this.state.userInfo); 
+        }
+        
     }
 
     render() {
@@ -59,6 +65,10 @@ export default class Register extends Component {
                         <Form.Group>
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" name="password" onChange={this.changeHandler} required></Form.Control>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Control type="password" name="cpassword" onChange={this.changeHandler} required></Form.Control>
                         </Form.Group>
                         <Button variant="outline-primary" block type="submit">Register</Button>
                     </Form>
