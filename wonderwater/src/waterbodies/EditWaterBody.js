@@ -6,7 +6,7 @@ export default class EditWaterBody extends Component {
 
     constructor(props) {
         super(props)
-        let fromYoutubeCheck = props.waterBody.video.includes("youtube") ? true : false;
+        
         this.state = {
             waterBody: {
                 "user": { ...props.user },
