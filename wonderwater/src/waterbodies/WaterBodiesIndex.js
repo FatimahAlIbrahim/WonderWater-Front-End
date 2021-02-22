@@ -108,7 +108,7 @@ export default class WaterBodiesIndex extends Component {
                     </CardDeck>) :
                     (window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "edit" ?
                         <EditWaterBody user={this.props.userData} waterBody={this.state.editWaterBody} editWaterBodyHandler={this.editWaterBodyHandler} />
-                        : <WaterBody user={this.props.userData} waterBody={this.state.detailWaterBody} />)
+                        : <WaterBody isAuth={this.props.isAuth} user={this.props.userData} waterBody={this.state.detailWaterBody} />)
                 }
 
             </div>
