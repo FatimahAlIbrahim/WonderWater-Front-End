@@ -7,21 +7,19 @@ import Login from './user/Login';
 import Home from './Home';
 import AddWaterBody from './waterbodies/AddWaterBody';
 import WaterBodiesIndex from './waterbodies/WaterBodiesIndex';
-import EditWaterBody from './waterbodies/EditWaterBody';
 
 export default class App extends Component {
 
   constructor(props) {
     super(props)
-
+    this.editWaterBody=null;
     this.state = {
       isAuth: false,
       user: null,
       userData: null,
       message: null,
       messageType: null,
-      redirect: null,
-      editWaterBody: null
+      redirect: null
     }
   }
 
@@ -130,27 +128,6 @@ export default class App extends Component {
       })
   }
 
-  editWaterBodyHandler = (waterBody) => {
-    axios.put("/wonderwater/waterbody/edit", waterBody, {
-      headers: {
-        "Authorization": "Bearer " + localStorage.getItem("token")
-      }
-    })
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }
-
-  editListener = (waterBody) => {
-    this.setState({
-      editWaterBody: waterBody,
-      redirect: "/waterbody/edit"
-    })
-  }
-
   render() {
     return (
       <div>
@@ -165,8 +142,7 @@ export default class App extends Component {
 
               <Route exact path="/" component={Home} />
               <Route path="/waterbody/add" component={() => <AddWaterBody user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
-              <Route path="/waterbody/edit" component={() => <EditWaterBody user={this.state.userData} waterBody={this.state.editWaterBody} editWaterBodyHandler={this.editWaterBodyHandler} />} />
-              <Route path="/waterbody/index" component={() => <WaterBodiesIndex editListener={this.editListener} isAuth={this.state.isAuth} userData={this.state.userData} />} />
+              <Route path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />
             </div>
           ) : (
               <div>

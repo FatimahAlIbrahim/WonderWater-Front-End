@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Card, CardDeck, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { BrowserRouter as Router, Link } from "react-router-dom";
+import EditWaterBody from './EditWaterBody';
 
 export default class WaterBodiesIndex extends Component {
 
@@ -8,7 +10,9 @@ export default class WaterBodiesIndex extends Component {
         super(props)
 
         this.state = {
-            waterBodies: []
+            waterBodies: [],
+            editWaterBody: null,
+            isIndex: false
         }
     }
 
@@ -19,14 +23,17 @@ export default class WaterBodiesIndex extends Component {
     loadWaterBodies = () => {
         axios.get("/wonderwater/waterbody/index")
             .then(response => {
-                console.log(response)
-                this.setState({
-                    waterBodies: response.data
-                })
+                    console.log(response)
+                    this.setState({
+                        waterBodies: response.data,
+                        isIndex: true
+                    })
             })
             .catch(error => {
                 console.log(error)
             })
+
+
     }
 
     deleteWaterBody = (id) => {
@@ -44,8 +51,19 @@ export default class WaterBodiesIndex extends Component {
             })
     }
 
-    editListener = (waterBody) => {
-        this.props.editListener(waterBody);
+    editWaterBodyHandler = (waterBody) => {
+        axios.put("/wonderwater/waterbody/edit", waterBody, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(response => {
+                console.log(response)
+                this.loadWaterBodies();
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
 
@@ -58,7 +76,11 @@ export default class WaterBodiesIndex extends Component {
                 </Card.Body>
                 {this.props.isAuth && this.props.userData.id == waterBody.user.id ?
                     <Card.Footer>
-                        <Button variant="outline-primary" onClick={() => this.editListener(waterBody)}>Edit</Button>
+                        <Router>
+                            <Link to="/waterbody/edit">
+                                <Button variant="outline-primary" onClick={() => this.setState({editWaterBody: waterBody, isIndex: false})}>Edit</Button>
+                            </Link>
+                        </Router>
                         <Button variant="outline-primary" onClick={() => this.deleteWaterBody(waterBody.waterBodyId)}>Delete</Button>
                     </Card.Footer>
                     : null}
@@ -68,9 +90,13 @@ export default class WaterBodiesIndex extends Component {
 
         return (
             <div>
-                <CardDeck>
-                    {waterBodiesList}
-                </CardDeck>
+                {window.location.href.substr(window.location.href.lastIndexOf("/") + 1)}
+                {window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "index" || this.state.isIndex ?
+                    (<CardDeck>
+                        {waterBodiesList}
+                    </CardDeck>) :
+                    (<EditWaterBody user={this.props.userData} waterBody={this.state.editWaterBody} editWaterBodyHandler={this.editWaterBodyHandler} />)
+                }
             </div>
         )
     }
