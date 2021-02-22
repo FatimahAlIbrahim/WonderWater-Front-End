@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Form, Button, Container, Tabs, Tab } from 'react-bootstrap'
+import axios from 'axios';
 
 export default class AddWaterBody extends Component {
 
@@ -14,10 +15,7 @@ export default class AddWaterBody extends Component {
                 "allowSwimming": true
             },
             image: null,
-            video: null,
-            fromYoutupe: false,
-            validImage: false,
-            validVideo: false
+            video: null
         }
     }
 
@@ -32,20 +30,10 @@ export default class AddWaterBody extends Component {
             });
         }
         else if (event.target.name == "video") {
-            if (event.target.value.includes("youtube")) {
-                this.setState({
-                    waterBody: waterBodyTemp,
-                    video: event.target.value,
-                    fromYoutupe: true
-                });
-            }
-            else {
-                this.setState({
-                    waterBody: waterBodyTemp,
-                    video: event.target.value,
-                    fromYoutupe: false
-                });
-            }
+            this.setState({
+                waterBody: waterBodyTemp,
+                video: event.target.value
+            });
         }
         else {
             this.setState({
@@ -56,30 +44,25 @@ export default class AddWaterBody extends Component {
 
     addWaterBodyHandler = (event) => {
         event.preventDefault();
-        if(this.state.validImage){
-            if(this.state.fromYoutupe == false){
-                if(this.state.validVideo){
-                    this.props.addWaterBodyHandler(this.state.waterBody);
-                }
-                else{
-                    console.log("please provide a valid video url")
-                }
-            }
-            else{
-                let video = this.state.video;
+        const imageRegex = new RegExp('jpg|png|jpeg{1}')
+        if(imageRegex.test(this.state.waterBody.picture)){
+            let video = this.state.waterBody.video;
+            if(video.includes("youtube")){
                 const regex = new RegExp('https:\/\/www\.youtube\.com\/embed\/([a-zA-Z0-9\_-]){11}');
                 if(regex.test(video)){
                     this.props.addWaterBodyHandler(this.state.waterBody);
                 }
                 else{
-                    console.log("please make sure to get the emped code of the youtupe video")
+                    console.log("please make sure to get the embed code of the youtube video")
                 }
+            }
+            else{
+                console.log("please make sure to get the embed code of youtube videos only")
             }
         }
         else{
             console.log("please provide a valid image url")
         }
-        
     }
 
     render() {
@@ -89,14 +72,10 @@ export default class AddWaterBody extends Component {
                     <Form onSubmit={this.addWaterBodyHandler}>
                         <Tabs transition={false} defaultActiveKey="picture">
                             <Tab eventKey="picture" title="Picture">
-                                <img onError={()=> this.setState({validImage: false})} onLoad={() => this.setState({validImage: true})} width="100%" height="400" src={this.state.image ? this.state.image : "https://i.stack.imgur.com/y9DpT.jpg"} />
+                                <img width="100%" height="400" src={this.state.image ? this.state.image : "https://i.stack.imgur.com/y9DpT.jpg"} />
                             </Tab>
                             <Tab eventKey="video" title="Video">
-                                {this.state.fromYoutupe ?
-                                    <iframe width="100%" height="400" src={this.state.video ? this.state.video : null} allowFullScreen/> :
-                                    <video onError={()=> this.setState({validVideo: false})} onLoad={() => this.setState({validVideo: true})} width="100%" height="400" controls src={this.state.video ? this.state.video : null} type="video/mp4" onChange={(event) => event.target.load()} />
-                                }
-
+                                <iframe width="100%" height="400" src={this.state.video} allowFullScreen /> :
                             </Tab>
                         </Tabs>
                         <Form.Group>
@@ -141,7 +120,7 @@ export default class AddWaterBody extends Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Description</Form.Label>
-                            <Form.Control type="text" name="description" onChange={this.changeHandler} required></Form.Control>
+                            <Form.Control as="textarea" name="description" onChange={this.changeHandler} required></Form.Control>
                         </Form.Group>
                         <Button variant="outline-primary" block type="submit">Add Water Body</Button>
                     </Form>
