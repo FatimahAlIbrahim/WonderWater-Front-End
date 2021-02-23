@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Card, CardDeck, Button } from 'react-bootstrap';
+import { CardDeck } from 'react-bootstrap';
 import axios from 'axios';
-import { BrowserRouter as Router, Link } from "react-router-dom";
 import EditWaterBody from './EditWaterBody';
 import WaterBody from './WaterBody';
+import WaterBodyCard from './WaterBodyCard';
 
 export default class WaterBodiesIndex extends Component {
 
@@ -34,8 +34,6 @@ export default class WaterBodiesIndex extends Component {
             .catch(error => {
                 console.log(error)
             })
-
-
     }
 
     deleteWaterBody = (id) => {
@@ -68,37 +66,27 @@ export default class WaterBodiesIndex extends Component {
             })
     }
 
+    showEdit = (waterBody) => {
+        this.setState({
+            editWaterBody: waterBody,
+            isIndex: false
+        })
+    }
+
+    showDetails = (waterBody) => {
+        this.setState({
+            detailWaterBody: waterBody,
+            isIndex: false
+        })
+    }
 
     render() {
         let waterBodiesList = this.state.waterBodies.map(waterBody =>
-            <Card key={waterBody.waterBodyId}>
-                <Card.Img variant="top" src={waterBody.picture} />
-                <Card.Body>
-                    <Card.Title>
-                        <Router>
-                            <Link to="/waterbody/details">
-                                <span onClick={() => this.setState({ detailWaterBody: waterBody, isIndex: false, isDetails: true })}>{waterBody.name}</span>
-                            </Link>
-                        </Router>
-                    </Card.Title>
-                </Card.Body>
-                {this.props.isAuth && this.props.userData.id == waterBody.user.id ?
-                    <Card.Footer>
-                        <Router>
-                            <Link to="/waterbody/edit">
-                                <Button variant="outline-primary" onClick={() => this.setState({ editWaterBody: waterBody, isIndex: false })}>Edit</Button>
-                            </Link>
-                        </Router>
-                        <Button variant="outline-primary" onClick={() => this.deleteWaterBody(waterBody.waterBodyId)}>Delete</Button>
-                    </Card.Footer>
-                    : null}
-
-            </Card>
+            <WaterBodyCard key={waterBody.waterBodyId} waterBody={waterBody} isAuth={this.props.isAuth} userData={this.props.userData} deleteWaterBody={this.deleteWaterBody} showEdit={this.showEdit} showDetails={this.showDetails}/>
         )
 
         return (
             <div>
-
                 {window.location.href.substr(window.location.href.lastIndexOf("/") + 1)}
                 {window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "index" || this.state.isIndex ?
                     (<CardDeck>
