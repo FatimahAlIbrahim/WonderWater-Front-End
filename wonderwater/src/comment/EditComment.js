@@ -7,7 +7,7 @@ export default class EditComment extends Component {
         super(props)
         
         this.state = {
-            comment: {...props.comment
+            comment: {...props.comment, "waterBody": {...props.waterBody}
             },
         }
     }

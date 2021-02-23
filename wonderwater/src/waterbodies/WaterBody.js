@@ -11,19 +11,26 @@ export default class WaterBody extends Component {
         super(props)
 
         this.state = {
-            comments: [...this.props.waterBody.comments],
-            editComment: null,
+            waterBody: {...props.waterBody},
+            editComment: null
         }
     }
 
     componentDidMount() {
-        this.loadCommentList();
+        this.loadWaterBodyDetails();
     }
 
-    loadCommentList = () => {
-        this.setState({
-            comments: [...this.props.waterBody.comments],
-            editComment: null,
+    loadWaterBodyDetails = () => {
+        axios.get(`/wonderwater/waterbody/details?id=${this.props.waterBody.waterBodyId}`)
+        .then(response => {
+            console.log(response)
+            this.setState({
+                waterBody: response.data,
+                editComment: null
+            })
+        })
+        .catch(error => {
+            console.log(error)
         })
     }
 
@@ -35,7 +42,7 @@ export default class WaterBody extends Component {
         })
             .then(response => {
                 console.log(response);
-                this.loadCommentList();
+                this.loadWaterBodyDetails();
                 // const updatedCommentList = [...this.state.comments]
                 // updatedCommentList.push(response.data)
                 // this.setState({
@@ -55,7 +62,7 @@ export default class WaterBody extends Component {
         })
             .then(response => {
                 console.log(response)
-                this.loadCommentList();
+                this.loadWaterBodyDetails();
                 // const updatedCommentList = [...this.state.comments]
                 // const index = updatedCommentList.findIndex(comment => comment.commentId === id)
                 // if (index !== -1) {
@@ -78,7 +85,7 @@ export default class WaterBody extends Component {
         })
             .then(response => {
                 console.log(response)
-                this.loadCommentList();
+                this.loadWaterBodyDetails();
                 // const updatedCommentList = [...this.state.comments]
                 // const index = updatedCommentList.findIndex(commentElement => commentElement.commentId === comment.commentId)
                 // if (index !== -1) {
@@ -106,22 +113,22 @@ export default class WaterBody extends Component {
                 waterbody details
                 <Tabs transition={false} defaultActiveKey="picture">
                     <Tab eventKey="picture" title="Picture">
-                        <img width="100%" height="400" src={this.props.waterBody.picture} />
+                        <img width="100%" height="400" src={this.state.waterBody.picture} />
                     </Tab>
                     <Tab eventKey="video" title="Video">
-                        <iframe width="100%" height="400" src={this.props.waterBody.video} allowFullScreen /> :
+                        <iframe width="100%" height="400" src={this.state.waterBody.video} allowFullScreen /> :
                     </Tab>
                 </Tabs>
-                <h2>{this.props.waterBody.name}</h2>
-                <p>Added By: {this.props.waterBody.user.firstName} {this.props.waterBody.user.lastName}</p>
-                {this.props.waterBody.dangerous ? <p>Dangerous</p> : <p>Safe</p>}
-                {this.props.waterBody.allowSwimming ? <p>Allow Swimming</p> : <p>Doesn't Allow Swimming</p>}
-                <p>Country: {this.props.waterBody.country}</p>
-                <p>Type: {this.props.waterBody.type}</p>
-                <p>Description: {this.props.waterBody.description}</p>
-                {this.props.isAuth && this.props.waterBody.comments.findIndex(comment => comment.user.id === this.props.user.id) === -1 ? <AddComment addCommentHandler={this.addCommentHandler} user={this.props.user} waterBody={this.props.waterBody} /> : null}
-                {this.props.isAuth && this.props.waterBody.comments.findIndex(comment => comment.user.id === this.props.user.id) !== -1 && this.state.editComment != null ? <EditComment editCommentHandler={this.editCommentHandler} comment={this.state.editComment} /> : null}
-                <CommentIndex isAuth={this.props.isAuth} user={this.props.user} comments={this.state.comments} deleteCommentHandler={this.deleteCommentHandler} getEditComment={this.getEditComment} />
+                <h2>{this.state.waterBody.name}</h2>
+                <p>Added By: {this.state.waterBody.user.firstName} {this.state.waterBody.user.lastName}</p>
+                {this.state.waterBody.dangerous ? <p>Dangerous</p> : <p>Safe</p>}
+                {this.state.waterBody.allowSwimming ? <p>Allow Swimming</p> : <p>Doesn't Allow Swimming</p>}
+                <p>Country: {this.state.waterBody.country}</p>
+                <p>Type: {this.state.waterBody.type}</p>
+                <p>Description: {this.state.waterBody.description}</p>
+                {this.props.isAuth && this.state.waterBody.comments.findIndex(comment => comment.user.id === this.props.user.id) === -1 ? <AddComment addCommentHandler={this.addCommentHandler} user={this.props.user} waterBody={this.state.waterBody} /> : null}
+                {this.props.isAuth && this.state.waterBody.comments.findIndex(comment => comment.user.id === this.props.user.id) !== -1 && this.state.editComment != null ? <EditComment waterBody={this.state.waterBody} editCommentHandler={this.editCommentHandler} comment={this.state.editComment} /> : null}
+                {this.state.waterBody.comments.length ? <CommentIndex isAuth={this.props.isAuth} user={this.props.user} comments={this.state.waterBody.comments} deleteCommentHandler={this.deleteCommentHandler} getEditComment={this.getEditComment} /> : null}
             </div>
         )
     }

@@ -15,7 +15,6 @@ export default class WaterBodiesIndex extends Component {
             editWaterBody: null,
             detailWaterBody: null,
             isIndex: false,
-            isDetails: false
         }
     }
 
@@ -29,8 +28,7 @@ export default class WaterBodiesIndex extends Component {
                 console.log(response)
                 this.setState({
                     waterBodies: response.data,
-                    isIndex: true,
-                    isDetails: false
+                    isIndex: true
                 })
             })
             .catch(error => {
