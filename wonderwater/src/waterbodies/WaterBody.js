@@ -43,11 +43,6 @@ export default class WaterBody extends Component {
             .then(response => {
                 console.log(response);
                 this.loadWaterBodyDetails();
-                // const updatedCommentList = [...this.state.comments]
-                // updatedCommentList.push(response.data)
-                // this.setState({
-                //     comments: updatedCommentList
-                // })
             })
             .catch(error => {
                 console.log(error);
@@ -63,14 +58,6 @@ export default class WaterBody extends Component {
             .then(response => {
                 console.log(response)
                 this.loadWaterBodyDetails();
-                // const updatedCommentList = [...this.state.comments]
-                // const index = updatedCommentList.findIndex(comment => comment.commentId === id)
-                // if (index !== -1) {
-                //     updatedCommentList.splice(index, 1)
-                //     this.setState({
-                //         comments: updatedCommentList
-                //     })
-                // }
             })
             .catch(error => {
                 console.log(error)
@@ -86,15 +73,6 @@ export default class WaterBody extends Component {
             .then(response => {
                 console.log(response)
                 this.loadWaterBodyDetails();
-                // const updatedCommentList = [...this.state.comments]
-                // const index = updatedCommentList.findIndex(commentElement => commentElement.commentId === comment.commentId)
-                // if (index !== -1) {
-                //     updatedCommentList.splice(index, 1, response.data)
-                //     this.setState({
-                //         comments: updatedCommentList,
-                //         editComment: null
-                //     })
-                // }
             })
             .catch(error => {
                 console.log(error)
@@ -105,6 +83,36 @@ export default class WaterBody extends Component {
         this.setState({
             editComment: comment
         })
+    }
+
+    addBookmarkHandler = () => {
+        axios.post("/wonderwater/bookmark/add", {"user": {...this.props.user}, "waterBody": {...this.state.waterBody}}, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(response => {
+                console.log(response);
+                this.loadWaterBodyDetails();
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    deleteBookmarkHandler = () => {
+        axios.delete(`/wonderwater/bookmark/delete?id=${this.state.waterBody.bookmarks[this.state.waterBody.bookmarks.findIndex(bookmark => bookmark.user.id === this.props.user.id)].bookmarkId}`, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(response => {
+                console.log(response)
+                this.loadWaterBodyDetails();
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     render() {
@@ -119,6 +127,13 @@ export default class WaterBody extends Component {
                         <iframe width="100%" height="400" src={this.state.waterBody.video} allowFullScreen /> :
                     </Tab>
                 </Tabs>
+                
+                {this.props.isAuth && this.state.waterBody.user.id !== this.props.user.id ? 
+                (this.state.waterBody.bookmarks.findIndex(bookmark => bookmark.user.id === this.props.user.id) !== -1 ?
+                <button onClick={this.deleteBookmarkHandler}>bookmarked</button> :
+                <button onClick={this.addBookmarkHandler}>bookmark</button>)
+                : null}
+
                 <h2>{this.state.waterBody.name}</h2>
                 <p>Added By: {this.state.waterBody.user.firstName} {this.state.waterBody.user.lastName}</p>
                 {this.state.waterBody.dangerous ? <p>Dangerous</p> : <p>Safe</p>}
