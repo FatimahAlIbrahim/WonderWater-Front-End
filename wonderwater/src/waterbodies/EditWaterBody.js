@@ -73,7 +73,7 @@ export default class EditWaterBody extends Component {
                                 <img width="100%" height="400" src={this.state.image ? this.state.image : "https://i.stack.imgur.com/y9DpT.jpg"} />
                             </Tab>
                             <Tab eventKey="video" title="Video">
-                                <iframe width="100%" height="400" src={this.state.video} allowFullScreen /> :
+                                <iframe width="100%" height="400" src={this.state.video} allowFullScreen />
                             </Tab>
                         </Tabs>
                         <Form.Group>

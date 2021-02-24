@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, withRouter } from "react-router-dom";
 import { decode } from "jsonwebtoken";
 import axios from 'axios';
 import Register from './user/Register';
@@ -7,19 +7,22 @@ import Login from './user/Login';
 import Home from './Home';
 import AddWaterBody from './waterbodies/AddWaterBody';
 import WaterBodiesIndex from './waterbodies/WaterBodiesIndex';
+import UserProfile from './user/UserProfile';
 
-export default class App extends Component {
+
+class App extends Component {
 
   constructor(props) {
     super(props)
-    
+
     this.state = {
       isAuth: false,
       user: null,
       userData: null,
+      userWaterBodies: null,
+      userBookmarks: null,
       message: null,
       messageType: null,
-      redirect: null
     }
   }
 
@@ -49,7 +52,7 @@ export default class App extends Component {
   }
 
   registerHandler = (user) => {
-    axios.post("wonderwater/user/registration", user)
+    axios.post("/wonderwater/user/registration", user)
       .then(response => {
         console.log(response);
       })
@@ -59,7 +62,7 @@ export default class App extends Component {
   }
 
   loginHandler = (user) => {
-    axios.post("wonderwater/user/authentication", user)
+    axios.post("/wonderwater/user/authentication", user)
       .then(response => {
         console.log(response);
 
@@ -68,7 +71,9 @@ export default class App extends Component {
 
           let user = decode(response.data.token);
           let userDataTemp = {};
-          axios.get(`wonderwater/user/userInfo?email=${user.sub}`).then(response => {
+          let userBookmarksTemp = [];
+          let userWaterBodiesTemp = [];
+          axios.get(`/wonderwater/user/userInfo?email=${user.sub}`).then(response => {
             console.log(response);
             if (response.data != null) {
               userDataTemp = { ...response.data };
@@ -77,18 +82,38 @@ export default class App extends Component {
               this.setState({
                 userData: { ...userDataTemp }
               })
+              axios.get(`/wonderwater/waterbody/find?id=${userDataTemp.id}`).then(response => {
+                console.log(response);
+                userWaterBodiesTemp = response.data;
+                this.setState({
+                  userWaterBodies: userWaterBodiesTemp
+                })
+              }).catch(error => {
+                console.log(error);
+              })
+              axios.get(`/wonderwater/bookmark/find?id=${userDataTemp.id}`).then(response => {
+                console.log(response)
+                userBookmarksTemp = response.data
+                this.setState({
+                  userBookmarks: userBookmarksTemp
+                })
+              }).catch(error => {
+                console.log(error);
+              })
             }
           }).catch(error => {
             console.log(error);
           })
-
           this.setState({
             isAuth: true,
             user: user,
+            userData: { ...userDataTemp },
+            userWaterBodies: userWaterBodiesTemp,
+            userBookmarks: userBookmarksTemp,
             message: "Successfully loged in!",
             messageType: "success",
-            redirect: "/"
           })
+          this.props.history.push("/");
         }
         else {
           this.setState({
@@ -110,8 +135,9 @@ export default class App extends Component {
     this.setState({
       isAuth: false,
       user: null,
-      userData: null
+      userData: null,
     })
+    this.props.history.push("/login");
   }
 
   addWaterBodyHandler = (waterBody) => {
@@ -132,17 +158,18 @@ export default class App extends Component {
     return (
       <div>
         <Router>
-          {this.state.redirect ? <Redirect to={this.state.redirect} /> : null}
           {this.state.isAuth ? (
             <div>
               <Link to="/">Home</Link>{' '}
               <Link to="/waterbody/add">Add Water Body</Link>{' '}
               <Link to="/waterbody/index">Water Bodies</Link>{' '}
+              <Link to="/user/profile">Welcome {this.state.userData.firstName} {this.state.userData.lastName}</Link>{' '}
               <Link to="/logout" onClick={this.logoutHandler}>Logout</Link>
 
               <Route exact path="/" component={Home} />
-              <Route path="/waterbody/add" component={() => <AddWaterBody user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
-              <Route path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />
+              <Route exact path="/waterbody/add" component={() => <AddWaterBody user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
+              <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />
+              <Route exact path="/user/profile" component={() => <UserProfile isAuth={this.state.isAuth} user={this.state.userData} waterBodies={this.state.userWaterBodies} bookmarks={this.state.userBookmarks}/>} />
             </div>
           ) : (
               <div>
@@ -152,13 +179,13 @@ export default class App extends Component {
                 <Link to="/login">Login</Link>
 
                 <Route exact path="/" component={Home} />
-                <Route path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />
-                <Route path="/register" component={() => <Register registerHandler={this.registerHandler} />} />
-                <Route path="/login" component={() => <Login loginHandler={this.loginHandler} />} />
+                <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />
+                <Route exact path="/register" component={() => <Register registerHandler={this.registerHandler} />} />
+                <Route exact path="/login" component={() => <Login loginHandler={this.loginHandler} />} />
               </div>
             )}
         </Router>
       </div>
     )
   }
-}
+} export default withRouter(App);

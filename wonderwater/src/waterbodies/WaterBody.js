@@ -141,7 +141,7 @@ export default class WaterBody extends Component {
                 <p>Country: {this.state.waterBody.country}</p>
                 <p>Type: {this.state.waterBody.type}</p>
                 <p>Description: {this.state.waterBody.description}</p>
-                {this.props.isAuth && this.state.waterBody.comments.findIndex(comment => comment.user.id === this.props.user.id) === -1 ? <AddComment addCommentHandler={this.addCommentHandler} user={this.props.user} waterBody={this.state.waterBody} /> : null}
+                {this.props.isAuth && this.state.waterBody.comments.findIndex(comment => comment.user.id === this.props.user.id) === -1 && this.state.waterBody.user.id !== this.props.user.id ? <AddComment addCommentHandler={this.addCommentHandler} user={this.props.user} waterBody={this.state.waterBody} /> : null}
                 {this.props.isAuth && this.state.waterBody.comments.findIndex(comment => comment.user.id === this.props.user.id) !== -1 && this.state.editComment != null ? <EditComment waterBody={this.state.waterBody} editCommentHandler={this.editCommentHandler} comment={this.state.editComment} /> : null}
                 {this.state.waterBody.comments.length ? <CommentIndex isAuth={this.props.isAuth} user={this.props.user} comments={this.state.waterBody.comments} deleteCommentHandler={this.deleteCommentHandler} getEditComment={this.getEditComment} /> : null}
             </div>
