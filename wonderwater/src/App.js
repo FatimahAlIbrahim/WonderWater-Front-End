@@ -157,13 +157,12 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Router>
           {this.state.isAuth ? (
             <div>
               <Link to="/">Home</Link>{' '}
               <Link to="/waterbody/add">Add Water Body</Link>{' '}
               <Link to="/waterbody/index">Water Bodies</Link>{' '}
-              <Link to="/user/profile">Welcome {this.state.userData.firstName} {this.state.userData.lastName}</Link>{' '}
+              <Link to="/user/profile">Welcome {this.state.userData.emailAddress} </Link>{' '}
               <Link to="/logout" onClick={this.logoutHandler}>Logout</Link>
 
               <Route exact path="/" component={Home} />
@@ -184,7 +183,6 @@ class App extends Component {
                 <Route exact path="/login" component={() => <Login loginHandler={this.loginHandler} />} />
               </div>
             )}
-        </Router>
       </div>
     )
   }

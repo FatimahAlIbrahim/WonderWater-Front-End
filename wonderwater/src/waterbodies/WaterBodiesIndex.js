@@ -4,6 +4,7 @@ import axios from 'axios';
 import EditWaterBody from './EditWaterBody';
 import WaterBody from './WaterBody';
 import WaterBodyCard from './WaterBodyCard';
+import { Redirect,  BrowserRouter as Router } from 'react-router-dom';
 
 export default class WaterBodiesIndex extends Component {
 
@@ -87,6 +88,9 @@ export default class WaterBodiesIndex extends Component {
 
         return (
             <div>
+                <Router>
+                    {this.state.isIndex ? <Redirect to="/waterbody/index"/> : null}
+                </Router>
                 {window.location.href.substr(window.location.href.lastIndexOf("/") + 1)}
                 {window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "index" || this.state.isIndex ?
                     (<CardDeck>
