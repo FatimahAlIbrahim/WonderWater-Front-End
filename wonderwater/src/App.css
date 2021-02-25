@@ -1,0 +1,66 @@
+/* css for App.js */
+.colorBG {
+    background-color: black;
+}
+
+.nav-link {
+    color: white !important;
+    font-size: 1.25em;
+}
+
+.fontSize {
+    font-size: 1.5em;
+}
+
+/* //////////////////////////////////////////////////// */
+
+/* css for Home.js */
+.homeDiv {
+    height: 90vh;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.greetings {
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 100%;
+    height: fit-content;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.greetings p{
+    font-weight: 900;
+    font-size: 1.5em;
+    text-transform: capitalize;
+}
+
+.homeDiv img{
+    height: 90vh;
+    width: 100%;
+    content: url("https://cdn.hipwallpaper.com/m/22/54/qmbXHr.jpg");
+    animation: slide 15s infinite;
+    z-index: -1;
+    position: absolute;
+}
+
+@keyframes slide {
+    25% {
+        content: url("https://tzassets.bestwestern.com/wp-content/uploads/2017/08/31074141/AdobeStock_45054633.jpeg");
+    }
+    50% {
+        content: url("https://colombia.travel/sites/default/files/xContenido_CaNo_Cristales_02.jpg.pagespeed.ic.xQQ-t2JodO.jpg");
+    }
+    75% {
+        content: url("https://tzassets.bestwestern.com/wp-content/uploads/2017/08/31074142/8-20-2017-1.jpg");
+    }
+    100% {
+        content: url("https://cdn.hipwallpaper.com/m/22/54/qmbXHr.jpg");
+    }
+}
+
+

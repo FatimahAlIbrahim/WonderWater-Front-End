@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Link, withRouter } from "react-router-dom";
+import { Route, Link, withRouter } from "react-router-dom";
 import { decode } from "jsonwebtoken";
 import axios from 'axios';
 import Register from './user/Register';
@@ -8,7 +8,8 @@ import Home from './Home';
 import AddWaterBody from './waterbodies/AddWaterBody';
 import WaterBodiesIndex from './waterbodies/WaterBodiesIndex';
 import UserProfile from './user/UserProfile';
-
+import { Nav, Navbar } from 'react-bootstrap';
+import './App.css'
 
 class App extends Component {
 
@@ -157,32 +158,50 @@ class App extends Component {
   render() {
     return (
       <div>
-          {this.state.isAuth ? (
+        {this.state.isAuth ? (
+          <div>
+            <Navbar collapseOnSelect expand="lg" className="colorBG" variant="dark">
+              <Navbar.Brand as={Link} to="/">Wonder Water</Navbar.Brand>
+              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+              <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="mr-auto">
+                  <Nav.Link as={Link} to="/waterbody/add">Add Water Body</Nav.Link>
+                  <Nav.Link as={Link} to="/waterbody/index">Water Bodies</Nav.Link>
+                </Nav>
+                <Nav>
+                  <Nav.Link as={Link} to="/user/profile">Welcome {this.state.userData.emailAddress}</Nav.Link>
+                  <Nav.Link as={Link} to="/logout" onClick={this.logoutHandler}>Logout</Nav.Link>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
+
+            <Route exact path="/" component={Home} />
+            <Route exact path="/waterbody/add" component={() => <AddWaterBody user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
+            <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />
+            <Route exact path="/user/profile" component={() => <UserProfile isAuth={this.state.isAuth} user={this.state.userData} waterBodies={this.state.userWaterBodies} bookmarks={this.state.userBookmarks} />} />
+          </div>
+        ) : (
             <div>
-              <Link to="/">Home</Link>{' '}
-              <Link to="/waterbody/add">Add Water Body</Link>{' '}
-              <Link to="/waterbody/index">Water Bodies</Link>{' '}
-              <Link to="/user/profile">Welcome {this.state.userData.emailAddress} </Link>{' '}
-              <Link to="/logout" onClick={this.logoutHandler}>Logout</Link>
+              <Navbar collapseOnSelect expand="lg" className="colorBG" variant="dark">
+                <Navbar.Brand as={Link} to="/"><em><span className="fontSize">W</span>onder<span className="fontSize">W</span>ater</em></Navbar.Brand>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                  <Nav className="mr-auto">
+                    <Nav.Link as={Link} to="/waterbody/index">Water Bodies</Nav.Link>
+                  </Nav>
+                  <Nav>
+                    <Nav.Link as={Link} to="/register">Register</Nav.Link>
+                    <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                  </Nav>
+                </Navbar.Collapse>
+              </Navbar>
 
               <Route exact path="/" component={Home} />
-              <Route exact path="/waterbody/add" component={() => <AddWaterBody user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
               <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />
-              <Route exact path="/user/profile" component={() => <UserProfile isAuth={this.state.isAuth} user={this.state.userData} waterBodies={this.state.userWaterBodies} bookmarks={this.state.userBookmarks}/>} />
+              <Route exact path="/register" component={() => <Register registerHandler={this.registerHandler} />} />
+              <Route exact path="/login" component={() => <Login loginHandler={this.loginHandler} />} />
             </div>
-          ) : (
-              <div>
-                <Link to="/">Home</Link>{' '}
-                <Link to="/waterbody/index">Water Bodies</Link>{' '}
-                <Link to="/register">Register</Link>{' '}
-                <Link to="/login">Login</Link>
-
-                <Route exact path="/" component={Home} />
-                <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />
-                <Route exact path="/register" component={() => <Register registerHandler={this.registerHandler} />} />
-                <Route exact path="/login" component={() => <Login loginHandler={this.loginHandler} />} />
-              </div>
-            )}
+          )}
       </div>
     )
   }
