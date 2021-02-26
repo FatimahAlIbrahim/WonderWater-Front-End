@@ -35,7 +35,13 @@ export default class Register extends Component {
             console.log("password and confirm password must be equal")
         }
         else{
-           this.props.registerHandler(this.state.userInfo); 
+            const imageRegex = new RegExp('jpg|png|jpeg{1}')
+            if(imageRegex.test(this.state.userInfo.picture)){
+                this.props.registerHandler(this.state.userInfo); 
+            }
+           else{
+               console.log("please enter a valid image")
+           }
         }
         
     }

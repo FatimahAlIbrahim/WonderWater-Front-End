@@ -219,17 +219,17 @@ export default class UserProfile extends Component {
                         <hr />
 
                         <Tabs transition={false} defaultActiveKey="myPosts">
-                            <Tab eventKey="myPosts" title="My Posts">
+                            <Tab eventKey="myPosts" title="My Posts" >
                                 {this.state.waterBodies.length ?
-                                    (<CardDeck>
+                                    (<div className="cardFlex">
                                         {waterBodiesList}
-                                    </CardDeck>) : <p>There are no posts to show yet</p>}
+                                    </div>) : <p>There are no posts to show yet</p>}
                             </Tab>
                             <Tab eventKey="myBookmardks" title="My Bookmarks">
                                 {this.state.bookmarks.length ?
-                                    (<CardDeck>
+                                    (<div className="cardFlex">
                                         {bookmarkList}
-                                    </CardDeck>) : <p>There are no bookmarks to show yet</p>}
+                                    </div>) : <p>There are no bookmarks to show yet</p>}
                             </Tab>
                         </Tabs>
                     </>

@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Link } from "react-router-dom"
-import { Card, Button } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
+import safe from './../images/safe.png'
+import dangerous from './../images/dangerous.png'
+import swimming from './../images/swimming.png'
+import noSwimming from './../images/noSwimming.png'
 
 export default class WaterBodyCard extends Component {
 
@@ -18,28 +22,33 @@ export default class WaterBodyCard extends Component {
 
     render() {
         return (
-                <Card>
-                    <Card.Img variant="top" src={this.props.waterBody.picture} />
-                    <Card.Body>
-                        <Card.Title>
-                            <Router>
-                                <Link to="/waterbody/details">
-                                    <span onClick={this.showDetails}>{this.props.waterBody.name}</span>
-                                </Link>
-                            </Router>
-                        </Card.Title>
-                    </Card.Body>
-                    {this.props.isAuth && this.props.userData.id == this.props.waterBody.user.id ?
-                        <Card.Footer>
-                            <Router>
-                                <Link to="/waterbody/edit">
-                                    <Button variant="outline-primary" onClick={this.showEdit}>Edit</Button>
-                                </Link>
-                            </Router>
-                            <Button variant="outline-primary" onClick={this.handleDelete}>Delete</Button>
-                        </Card.Footer>
-                        : null}
-                </Card>
+            <Card className="cards">
+                <Card.Img variant="top" src={this.props.waterBody.picture} />
+                <Card.Body>
+                    <Card.Title>
+                        <span>{this.props.waterBody.dangerous ? <img width="16px" src={dangerous} /> : <img width="16px" src={safe} />}</span> {' '}
+                        <span>{this.props.waterBody.allowSwimming ? <img width="20px" src={swimming} /> : <img width="20px" src={noSwimming} />}</span> {' '}
+                        <Router>
+                            <Link to="/waterbody/details">
+                                <span onClick={this.showDetails}>{this.props.waterBody.name} {this.props.waterBody.type}</span>
+                            </Link>
+                        </Router>
+                    </Card.Title>
+                    <Card.Text>
+                        In {this.props.waterBody.country}
+                        <span id="controls">
+                            {this.props.isAuth && this.props.userData.id == this.props.waterBody.user.id ?
+                                <><Router>
+                                    <Link to="/waterbody/edit">
+                                        <span onClick={this.showEdit}>Edit /</span>
+                                    </Link>
+                                </Router></> : null}
+                            {this.props.isAuth && (this.props.userData.id == this.props.waterBody.user.id || this.props.userData.userRole === "ROLE_ADMIN") ?
+                                <span onClick={this.handleDelete}> Delete</span> : null}
+                        </span>
+                    </Card.Text>
+                </Card.Body>
+            </Card>
         )
     }
 }

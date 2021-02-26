@@ -1,11 +1,15 @@
 /* css for App.js */
 .colorBG {
-    background-color: #195190FF;
+    background-color: #1e2761;
 }
 
 .nav-link {
     color: white !important;
     font-size: 1.25em;
+}
+
+.navbar-brand {
+    color: white !important;
 }
 
 .fontSize {
@@ -61,6 +65,54 @@
     100% {
         content: url("https://cdn.hipwallpaper.com/m/22/54/qmbXHr.jpg");
     }
+} 
+
+.cardFlex {
+    display: flex;
+    flex-wrap: wrap;
+    padding: .5%;
+    justify-content: center;
 }
+
+.cards {
+    flex-basis: 30%;
+    margin: 1%;
+}
+
+.card-img-top {
+    margin-top: 5%;
+    align-self: center;
+    width: 90% !important;
+}
+
+a {
+    color: #7a2048 !important;
+}
+
+#controls {
+    float: right;
+    font-style: italic;
+    color: #408ec6;
+    cursor: pointer;
+}
+
+#controls a {
+    color: #408ec6 !important;
+}
+
+a:hover {
+    text-decoration: none !important;
+}
+
+.nav .nav-item {
+    color: #7a2048 !important;
+}
+
+@media (max-width: 700px) {
+    .cards {
+        flex-basis: auto;
+        margin: 2%;
+    }
+  }
 
 

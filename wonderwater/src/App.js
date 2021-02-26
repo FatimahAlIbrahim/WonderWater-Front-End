@@ -56,6 +56,7 @@ class App extends Component {
     axios.post("/wonderwater/user/registration", user)
       .then(response => {
         console.log(response);
+        this.props.history.push("/login");
       })
       .catch(error => {
         console.log(error);
@@ -149,6 +150,7 @@ class App extends Component {
     })
       .then(response => {
         console.log(response);
+        this.props.history.push("/waterbody/index");
       })
       .catch(error => {
         console.log(error);
