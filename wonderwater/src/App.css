@@ -1,6 +1,6 @@
 /* css for App.js */
 .colorBG {
-    background-color: black;
+    background-color: #195190FF;
 }
 
 .nav-link {
@@ -24,7 +24,7 @@
 }
 
 .greetings {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.4);
     width: 100%;
     height: fit-content;
     text-align: center;

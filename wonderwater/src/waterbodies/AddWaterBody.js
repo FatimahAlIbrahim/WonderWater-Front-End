@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Button, Container, Tabs, Tab } from 'react-bootstrap'
-import axios from 'axios';
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 export default class AddWaterBody extends Component {
 
@@ -42,25 +43,39 @@ export default class AddWaterBody extends Component {
         }
     }
 
+    editorChangeHandler = (html) => {
+        let waterBodyTemp = { ...this.state.waterBody };
+        waterBodyTemp["description"] = html;
+        console.log(waterBodyTemp);
+        this.setState({
+            waterBody: waterBodyTemp
+        })
+    }
+
     addWaterBodyHandler = (event) => {
         event.preventDefault();
         const imageRegex = new RegExp('jpg|png|jpeg{1}')
-        if(imageRegex.test(this.state.waterBody.picture)){
+        if (imageRegex.test(this.state.waterBody.picture)) {
             let video = this.state.waterBody.video;
-            if(video.includes("youtube")){
+            if (video.includes("youtube")) {
                 const regex = new RegExp('https:\/\/www\.youtube\.com\/embed\/([a-zA-Z0-9\_-]){11}');
-                if(regex.test(video)){
-                    this.props.addWaterBodyHandler(this.state.waterBody);
+                if (regex.test(video)) {
+                    if(this.state.waterBody.description == "<p><br></p>" || this.state.waterBody.description == null){
+                        console.log("please enter a description")
+                    }
+                    else{
+                        this.props.addWaterBodyHandler(this.state.waterBody);
+                    }
                 }
-                else{
+                else {
                     console.log("please make sure to get the embed code of the youtube video")
                 }
             }
-            else{
+            else {
                 console.log("please make sure to get the embed code of youtube videos only")
             }
         }
-        else{
+        else {
             console.log("please provide a valid image url")
         }
     }
@@ -120,7 +135,23 @@ export default class AddWaterBody extends Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Description</Form.Label>
-                            <Form.Control as="textarea" name="description" onChange={this.changeHandler} required></Form.Control>
+                            <ReactQuill name="description" theme="snow" onChange={this.editorChangeHandler}
+                                modules={{
+                                    toolbar: [
+                                        ['bold', 'italic', 'underline', 'strike'],
+                                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+
+                                        ['clean']
+                                    ],
+                                    clipboard: {
+                                        matchVisual: false,
+                                    }
+                                }}
+                                formats={[
+                                    'bold', 'italic', 'underline', 'strike',
+                                    'list', 'bullet'
+                                ]}
+                            />
                         </Form.Group>
                         <Button variant="outline-primary" block type="submit">Add Water Body</Button>
                     </Form>

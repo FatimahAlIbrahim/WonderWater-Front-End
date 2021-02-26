@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Button, Container, Tabs, Tab } from 'react-bootstrap'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 
 export default class EditWaterBody extends Component {
@@ -38,6 +40,15 @@ export default class EditWaterBody extends Component {
                 waterBody: waterBodyTemp
             });
         }
+    }
+
+    editorChangeHandler = (html) => {
+        let waterBodyTemp = { ...this.state.waterBody };
+        waterBodyTemp["description"] = html;
+        console.log(waterBodyTemp);
+        this.setState({
+            waterBody: waterBodyTemp
+        })
     }
 
     editWaterBodyHandler = (event) => {
@@ -118,7 +129,23 @@ export default class EditWaterBody extends Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Description</Form.Label>
-                            <Form.Control as="textarea" name="description" onChange={this.changeHandler} required value={this.state.waterBody.description}></Form.Control>
+                            <ReactQuill name="description" theme="snow" onChange={this.editorChangeHandler} value={this.state.waterBody.description}
+                                modules={{
+                                    toolbar: [
+                                        ['bold', 'italic', 'underline', 'strike'],
+                                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+
+                                        ['clean']
+                                    ],
+                                    clipboard: {
+                                        matchVisual: false,
+                                    }
+                                }}
+                                formats={[
+                                    'bold', 'italic', 'underline', 'strike',
+                                    'list', 'bullet'
+                                ]}
+                            />
                         </Form.Group>
                         <Button variant="outline-primary" block type="submit">Edit Water Body</Button>
                     </Form>
