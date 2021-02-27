@@ -191,7 +191,7 @@ export default class UserProfile extends Component {
         )
 
         let bookmarkList = this.state.bookmarks.map(bookmark =>
-            <BookmarkCard key={bookmark[1]} bookmark={bookmark} deleteBookmarkHandler={this.deleteBookmarkHandler} />
+            <BookmarkCard key={bookmark[1]} bookmark={bookmark} deleteBookmarkHandler={this.deleteBookmarkHandler} showDetails={this.showDetails}/>
         )
 
         return (
@@ -214,7 +214,7 @@ export default class UserProfile extends Component {
                         <p>Enter current password to be able to update your information</p>
                         <Form inline onSubmit={this.checkPassword}>
                             <Form.Control placeholder="Enter password here..." onChange={this.onChange} />
-                            <Button variant="outline-primary" type="submit">Submit</Button>
+                            <button type="submit" className="btn-style">Submit</button>
                         </Form>
                         <hr />
 

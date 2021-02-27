@@ -82,8 +82,9 @@ export default class AddWaterBody extends Component {
 
     render() {
         return (
-            <div>
+            <div className="page">
                 <Container>
+                <p className="pageTitle">Add Water Body</p>
                     <Form onSubmit={this.addWaterBodyHandler}>
                         <Tabs transition={false} defaultActiveKey="picture">
                             <Tab eventKey="picture" title="Picture">
@@ -153,7 +154,7 @@ export default class AddWaterBody extends Component {
                                 ]}
                             />
                         </Form.Group>
-                        <Button variant="outline-primary" block type="submit">Add Water Body</Button>
+                        <button className="btn-style btn-block" type="submit">Add Water Body</button>
                     </Form>
                 </Container>
             </div>

@@ -76,8 +76,9 @@ export default class EditWaterBody extends Component {
 
     render() {
         return (
-            <div>
+            <div className="page">
                 <Container>
+                <p className="pageTitle">Edit Water Body</p>
                     <Form onSubmit={this.editWaterBodyHandler}>
                         <Tabs transition={false} defaultActiveKey="picture">
                             <Tab eventKey="picture" title="Picture">
@@ -147,7 +148,7 @@ export default class EditWaterBody extends Component {
                                 ]}
                             />
                         </Form.Group>
-                        <Button variant="outline-primary" block type="submit">Edit Water Body</Button>
+                        <button className="btn-style btn-block" type="submit">Edit Water Body</button>
                     </Form>
                 </Container>
             </div>

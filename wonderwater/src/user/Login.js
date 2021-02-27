@@ -27,8 +27,9 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div>
+            <div className="page">
                 <Container>
+                    <p className="pageTitle">Login</p>
                     <Form onSubmit={this.loginHandler}>
                         <Form.Group>
                             <Form.Label>Email Address</Form.Label>
@@ -38,7 +39,7 @@ export default class Login extends Component {
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" name="password" onChange={this.changeHandler} required></Form.Control>
                         </Form.Group>
-                        <Button variant="outline-primary" block type="submit">Login</Button>
+                        <button className="btn-style btn-block" type="submit">Login</button>
                     </Form>
                 </Container>
             </div>

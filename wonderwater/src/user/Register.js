@@ -48,10 +48,11 @@ export default class Register extends Component {
 
     render() {
         return (
-            <div>
+            <div className="page">
                 <Container>
+                <p className="pageTitle">Register</p>
                     <Form onSubmit={this.registerHandler}>
-                        <img width="300" height="300" src={this.state.image ? this.state.image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7HrjlxizejA_sfkfPhIaAdv5Cxy6A-HGFzA&usqp=CAU"} />
+                        <img className="registerImage" width="300" height="300" src={this.state.image ? this.state.image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7HrjlxizejA_sfkfPhIaAdv5Cxy6A-HGFzA&usqp=CAU"} />
                         <Form.Group>
                             <Form.Label>Picture</Form.Label>
                             <Form.Control type="url" name="picture" onChange={this.changeHandler} required></Form.Control>
@@ -76,7 +77,7 @@ export default class Register extends Component {
                             <Form.Label>Confirm Password</Form.Label>
                             <Form.Control type="password" name="cpassword" onChange={this.changeHandler} required></Form.Control>
                         </Form.Group>
-                        <Button variant="outline-primary" block type="submit">Register</Button>
+                        <button className="btn-style btn-block" type="submit">Register</button>
                     </Form>
                 </Container>
             </div>

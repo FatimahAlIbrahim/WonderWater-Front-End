@@ -26,7 +26,7 @@ export default class WaterBodyCard extends Component {
                 <Card.Img variant="top" src={this.props.waterBody.picture} />
                 <Card.Body>
                     <Card.Title>
-                        <span>{this.props.waterBody.dangerous ? <img width="16px" src={dangerous} /> : <img width="16px" src={safe} />}</span> {' '}
+                        <span>{this.props.waterBody.dangerous ? <img width="16px" src={dangerous} /> : <img width="25px" src={safe} />}</span> {' '}
                         <span>{this.props.waterBody.allowSwimming ? <img width="20px" src={swimming} /> : <img width="20px" src={noSwimming} />}</span> {' '}
                         <Router>
                             <Link to="/waterbody/details">

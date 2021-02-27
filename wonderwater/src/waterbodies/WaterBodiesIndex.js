@@ -87,14 +87,15 @@ export default class WaterBodiesIndex extends Component {
         )
 
         return (
-            <div>
+            <div className="page">
                 <Router>
                     {this.state.isIndex ? <Redirect to="/waterbody/index"/> : null}
                 </Router>
                 {window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "index" || this.state.isIndex ?
-                    (<div className="cardFlex">
+                    <><p className="pageTitle">Water Bodies</p>
+                    <div className="cardFlex">
                         {waterBodiesList}
-                    </div>) :
+                    </div></> :
                     (window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "edit" ?
                         <EditWaterBody user={this.props.userData} waterBody={this.state.editWaterBody} editWaterBodyHandler={this.editWaterBodyHandler} />
                         : <WaterBody isAuth={this.props.isAuth} user={this.props.userData} waterBody={this.state.detailWaterBody} />)

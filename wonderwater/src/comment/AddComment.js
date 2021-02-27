@@ -37,7 +37,7 @@ export default class AddComment extends Component {
                             <Form.Label>Comment Body</Form.Label>
                             <Form.Control as="textarea" name="commentBody" onChange={this.changeHandler} required></Form.Control>
                         </Form.Group>
-                        <Button variant="outline-primary" block type="submit">Add Comment</Button>
+                        <button className="btn-style btn-block" type="submit">Add Comment</button>
                     </Form>
                 </Container>
             </div>

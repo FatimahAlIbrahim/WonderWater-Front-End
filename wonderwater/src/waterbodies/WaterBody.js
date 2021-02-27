@@ -132,8 +132,8 @@ export default class WaterBody extends Component {
                 
                 {this.props.isAuth && this.state.waterBody.user.id !== this.props.user.id ? 
                 (this.state.waterBody.bookmarks.findIndex(bookmark => bookmark.user.id === this.props.user.id) !== -1 ?
-                <button onClick={this.deleteBookmarkHandler}>bookmarked</button> :
-                <button onClick={this.addBookmarkHandler}>bookmark</button>)
+                <button onClick={this.deleteBookmarkHandler}>Remove Bookmark</button> :
+                <button onClick={this.addBookmarkHandler}>Bookmark</button>)
                 : null}
 
                 <h2>{this.state.waterBody.name}</h2>
