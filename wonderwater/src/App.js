@@ -10,6 +10,8 @@ import WaterBodiesIndex from './waterbodies/WaterBodiesIndex';
 import UserProfile from './user/UserProfile';
 import { Nav, Navbar } from 'react-bootstrap';
 import './App.css'
+import SearchWaterBodies from './waterbodies/SearchWaterBodies';
+import WaterBody from './waterbodies/WaterBody';
 
 class App extends Component {
 
@@ -24,6 +26,7 @@ class App extends Component {
       userBookmarks: null,
       message: null,
       messageType: null,
+      detailWaterBody: null
     }
   }
 
@@ -157,6 +160,13 @@ class App extends Component {
       })
   }
 
+  detailWaterBodyChangeHandler = (waterBody) => {
+    this.setState({
+      detailWaterBody: waterBody
+    })
+    this.props.history.push("/waterbody/details");
+  }
+
   render() {
     return (
       <div>
@@ -173,6 +183,7 @@ class App extends Component {
                 <Nav>
                   <Nav.Link as={Link} to="/user/profile">Welcome {this.state.userData.emailAddress}</Nav.Link>
                   <Nav.Link as={Link} to="/logout" onClick={this.logoutHandler}>Logout</Nav.Link>
+                  <SearchWaterBodies isAuth={this.state.isAuth} userData={this.state.userData} detailWaterBodyChangeHandler={this.detailWaterBodyChangeHandler}/>
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
@@ -194,6 +205,7 @@ class App extends Component {
                   <Nav>
                     <Nav.Link as={Link} to="/register">Register</Nav.Link>
                     <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                    <SearchWaterBodies isAuth={this.state.isAuth} userData={this.state.userData} detailWaterBodyChangeHandler={this.detailWaterBodyChangeHandler}/>
                   </Nav>
                 </Navbar.Collapse>
               </Navbar>
@@ -204,6 +216,9 @@ class App extends Component {
               <Route exact path="/login" component={() => <Login loginHandler={this.loginHandler} />} />
             </div>
           )}
+        {this.state.detailWaterBody ?
+          <Route exact path="/waterbody/details" component={() => <WaterBody isAuth={this.state.isAuth} user={this.state.userData} waterBody={this.state.detailWaterBody} />} />
+          : null}
       </div>
     )
   }

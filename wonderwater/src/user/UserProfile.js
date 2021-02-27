@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react'
-import { Tabs, Tab, CardDeck, Form, Button } from 'react-bootstrap'
+import { Tabs, Tab, Form } from 'react-bootstrap'
 import BookmarkCard from '../bookmark/BookmarkCard';
 import EditWaterBody from '../waterbodies/EditWaterBody';
 import WaterBody from '../waterbodies/WaterBody';
