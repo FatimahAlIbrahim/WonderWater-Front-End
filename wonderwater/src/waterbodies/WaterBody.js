@@ -6,6 +6,12 @@ import axios from 'axios'
 import EditComment from '../comment/EditComment'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import safe from './../images/safe.png'
+import dangerous from './../images/dangerous.png'
+import swimming from './../images/swimming.png'
+import noSwimming from './../images/noSwimming.png'
+import by from './../images/by.png'
+import location from './../images/location.png'
 
 export default class WaterBody extends Component {
 
@@ -13,7 +19,7 @@ export default class WaterBody extends Component {
         super(props)
 
         this.state = {
-            waterBody: {...props.waterBody},
+            waterBody: { ...props.waterBody },
             editComment: null
         }
     }
@@ -24,16 +30,16 @@ export default class WaterBody extends Component {
 
     loadWaterBodyDetails = () => {
         axios.get(`/wonderwater/waterbody/details?id=${this.props.waterBody.waterBodyId}`)
-        .then(response => {
-            console.log(response)
-            this.setState({
-                waterBody: response.data,
-                editComment: null
+            .then(response => {
+                console.log(response)
+                this.setState({
+                    waterBody: response.data,
+                    editComment: null
+                })
             })
-        })
-        .catch(error => {
-            console.log(error)
-        })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     addCommentHandler = (comment) => {
@@ -88,7 +94,7 @@ export default class WaterBody extends Component {
     }
 
     addBookmarkHandler = () => {
-        axios.post("/wonderwater/bookmark/add", {"user": {...this.props.user}, "waterBody": {...this.state.waterBody}}, {
+        axios.post("/wonderwater/bookmark/add", { "user": { ...this.props.user }, "waterBody": { ...this.state.waterBody } }, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
@@ -119,31 +125,39 @@ export default class WaterBody extends Component {
 
     render() {
         return (
-            <div>
-                waterbody details
+            <div className="page">
+                <p className="pageTitle">Waterbody Details</p>
                 <Tabs transition={false} defaultActiveKey="picture">
                     <Tab eventKey="picture" title="Picture">
-                        <img width="100%" height="400" src={this.state.waterBody.picture} />
+                        <img width="100%" height="500" src={this.state.waterBody.picture} />
                     </Tab>
                     <Tab eventKey="video" title="Video">
-                        <iframe width="100%" height="400" src={this.state.waterBody.video} allowFullScreen /> :
+                        <iframe width="100%" height="500" src={this.state.waterBody.video} allowFullScreen /> :
                     </Tab>
                 </Tabs>
-                
-                {this.props.isAuth && this.state.waterBody.user.id !== this.props.user.id ? 
-                (this.state.waterBody.bookmarks.findIndex(bookmark => bookmark.user.id === this.props.user.id) !== -1 ?
-                <button onClick={this.deleteBookmarkHandler}>Remove Bookmark</button> :
-                <button onClick={this.addBookmarkHandler}>Bookmark</button>)
-                : null}
 
-                <h2>{this.state.waterBody.name}</h2>
-                <p>Added By: {this.state.waterBody.user.firstName} {this.state.waterBody.user.lastName}</p>
-                {this.state.waterBody.dangerous ? <p>Dangerous</p> : <p>Safe</p>}
-                {this.state.waterBody.allowSwimming ? <p>Allow Swimming</p> : <p>Doesn't Allow Swimming</p>}
-                <p>Country: {this.state.waterBody.country}</p>
-                <p>Type: {this.state.waterBody.type}</p>
-                <p>Description: </p>
-                <ReactQuill value={this.state.waterBody.description} readOnly={true} theme={"bubble"} />
+                <div className="detailsNameDiv">
+                    <p>{this.state.waterBody.name} {this.state.waterBody.type}</p>
+                    <div>
+                        {this.props.isAuth && this.state.waterBody.user.id !== this.props.user.id ?
+                            (this.state.waterBody.bookmarks.findIndex(bookmark => bookmark.user.id === this.props.user.id) !== -1 ?
+                                <button className="btn-style" onClick={this.deleteBookmarkHandler}>Remove Bookmark</button> :
+                                <button className="btn-style" onClick={this.addBookmarkHandler}>Bookmark</button>)
+                            : null}
+                    </div>
+                </div>
+
+                <div className="detailsOthersDiv">
+                    <p><img width="25px" src={by} /> {this.state.waterBody.user.firstName} {this.state.waterBody.user.lastName}</p>
+                    {this.state.waterBody.dangerous ? <p><img width="25px" src={dangerous} /> Dangerous</p> : <p><img width="25px" src={safe} /> Safe</p>}
+                    {this.state.waterBody.allowSwimming ? <p><img width="25px" src={swimming} /> Allow Swimming</p> : <p><img width="25px" src={noSwimming} /> Doesn't Allow Swimming</p>}
+                    <p><img width="25px" src={location} /> {this.state.waterBody.country}</p>
+                </div>
+
+                <p className="description">
+                    <ReactQuill value={this.state.waterBody.description} readOnly={true} theme={"bubble"} />
+                </p>
+
                 {this.props.isAuth && this.state.waterBody.comments.findIndex(comment => comment.user.id === this.props.user.id) === -1 && this.state.waterBody.user.id !== this.props.user.id ? <AddComment addCommentHandler={this.addCommentHandler} user={this.props.user} waterBody={this.state.waterBody} /> : null}
                 {this.props.isAuth && this.state.waterBody.comments.findIndex(comment => comment.user.id === this.props.user.id) !== -1 && this.state.editComment != null ? <EditComment waterBody={this.state.waterBody} editCommentHandler={this.editCommentHandler} comment={this.state.editComment} /> : null}
                 {this.state.waterBody.comments.length ? <CommentIndex isAuth={this.props.isAuth} user={this.props.user} comments={this.state.waterBody.comments} deleteCommentHandler={this.deleteCommentHandler} getEditComment={this.getEditComment} /> : null}

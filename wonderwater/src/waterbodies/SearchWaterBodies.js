@@ -12,7 +12,7 @@ export default class SearchWaterBodies extends Component {
         this.state = {
             waterBodies: null,
             filterResult: null,
-            filterValue: null
+            filterValue: ""
         }
     }
 
@@ -53,7 +53,7 @@ export default class SearchWaterBodies extends Component {
         }
     }
 
-    handleClick = (waterBody) =>{
+    handleClick = (waterBody) => {
         this.setState({
             filterResult: null,
             filterValue: ""
@@ -63,17 +63,17 @@ export default class SearchWaterBodies extends Component {
 
     render() {
         return (
-            <div>
-                <FormControl type="text" value={this.state.filterValue} placeholder="Search" onChange={this.changeHandler} />
-                {this.state.filterResult ?
-                <div className="searchResult">
-                    <Router>
-                        {this.state.filterResult.map((waterBody, index) =>
-                            <p  key={index}>
-                                <Link to="/waterbody/details" onClick={() => this.handleClick(waterBody)}>{waterBody.name} {waterBody.type}</Link>
-                            </p>
-                        )}
-                    </Router></div> : null}
+            <div style={{ position: "relative", top: "13%" }}>
+                    <FormControl style={{ position: "relative", top: "13%" }} type="text" value={this.state.filterValue} placeholder="Search" onChange={this.changeHandler} />
+                    {this.state.filterResult ?
+                        <div className="searchResult">
+                            <Router>
+                                {this.state.filterResult.map((waterBody, index) =>
+                                    <p key={index}>
+                                        <Link to="/waterbody/details" onClick={() => this.handleClick(waterBody)}>{waterBody.name} {waterBody.type}</Link>
+                                    </p>
+                                )}
+                            </Router></div> : null}
             </div>
         )
     }

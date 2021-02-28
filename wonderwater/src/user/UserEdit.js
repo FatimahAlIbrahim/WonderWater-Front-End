@@ -44,6 +44,7 @@ export default class UserEdit extends Component {
         return (
             <div>
                 <Container>
+                <p className="pageTitle">Edit Personal Information</p>
                     <Form onSubmit={this.editUserHandler}>
                         <img width="300" height="300" src={this.state.image ? this.state.image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7HrjlxizejA_sfkfPhIaAdv5Cxy6A-HGFzA&usqp=CAU"} />
                         <Form.Group>

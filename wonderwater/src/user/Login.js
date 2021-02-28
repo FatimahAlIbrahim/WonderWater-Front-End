@@ -27,7 +27,6 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div className="page">
                 <Container>
                     <p className="pageTitle">Login</p>
                     <Form onSubmit={this.loginHandler}>
@@ -42,7 +41,6 @@ export default class Login extends Component {
                         <button className="btn-style btn-block" type="submit">Login</button>
                     </Form>
                 </Container>
-            </div>
         )
     }
 }

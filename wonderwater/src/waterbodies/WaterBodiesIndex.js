@@ -3,7 +3,8 @@ import axios from 'axios';
 import EditWaterBody from './EditWaterBody';
 import WaterBody from './WaterBody';
 import WaterBodyCard from './WaterBodyCard';
-import { Redirect,  BrowserRouter as Router } from 'react-router-dom';
+import { Redirect, BrowserRouter as Router } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
 
 export default class WaterBodiesIndex extends Component {
 
@@ -82,25 +83,24 @@ export default class WaterBodiesIndex extends Component {
 
     render() {
         let waterBodiesList = this.state.waterBodies.map(waterBody =>
-            <WaterBodyCard key={waterBody.waterBodyId} waterBody={waterBody} isAuth={this.props.isAuth} userData={this.props.userData} deleteWaterBody={this.deleteWaterBody} showEdit={this.showEdit} showDetails={this.showDetails}/>
+            <WaterBodyCard key={waterBody.waterBodyId} waterBody={waterBody} isAuth={this.props.isAuth} userData={this.props.userData} deleteWaterBody={this.deleteWaterBody} showEdit={this.showEdit} showDetails={this.showDetails} />
         )
 
         return (
-            <div className="page">
+            <Container>
                 <Router>
-                    {this.state.isIndex ? <Redirect to="/waterbody/index"/> : null}
+                    {this.state.isIndex ? <Redirect to="/waterbody/index" /> : null}
                 </Router>
                 {window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "index" || this.state.isIndex ?
                     <><p className="pageTitle">Water Bodies</p>
-                    <div className="cardFlex">
-                        {waterBodiesList}
-                    </div></> :
+                        <div className="cardFlex">
+                            {waterBodiesList}
+                        </div></> :
                     (window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "edit" ?
                         <EditWaterBody user={this.props.userData} waterBody={this.state.editWaterBody} editWaterBodyHandler={this.editWaterBodyHandler} />
                         : <WaterBody isAuth={this.props.isAuth} user={this.props.userData} waterBody={this.state.detailWaterBody} />)
                 }
-
-            </div>
+            </Container>
         )
     }
 }

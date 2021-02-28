@@ -60,23 +60,27 @@ export default class AddWaterBody extends Component {
             if (video.includes("youtube")) {
                 const regex = new RegExp('https:\/\/www\.youtube\.com\/embed\/([a-zA-Z0-9\_-]){11}');
                 if (regex.test(video)) {
-                    if(this.state.waterBody.description == "<p><br></p>" || this.state.waterBody.description == null){
-                        console.log("please enter a description")
+                    if (this.state.waterBody.description == "<p><br></p>" || this.state.waterBody.description == null) {
+                        window.scrollTo(0, 0);
+                        this.props.handleAlert("Please enter a description", "danger")
                     }
-                    else{
+                    else {
                         this.props.addWaterBodyHandler(this.state.waterBody);
                     }
                 }
                 else {
-                    console.log("please make sure to get the embed code of the youtube video")
+                    window.scrollTo(0, 0);
+                    this.props.handleAlert("Please make sure to get the embed code of the youtube video", "danger");
                 }
             }
             else {
-                console.log("please make sure to get the embed code of youtube videos only")
+                window.scrollTo(0, 0);
+                this.props.handleAlert("Please make sure to get the embed code of youtube videos only", "danger");
             }
         }
         else {
-            console.log("please provide a valid image url")
+            window.scrollTo(0, 0);
+            this.props.handleAlert("Please provide a valid image url", "danger");
         }
     }
 
@@ -84,7 +88,7 @@ export default class AddWaterBody extends Component {
         return (
             <div className="page">
                 <Container>
-                <p className="pageTitle">Add Water Body</p>
+                    <p className="pageTitle">Add Water Body</p>
                     <Form onSubmit={this.addWaterBodyHandler}>
                         <Tabs transition={false} defaultActiveKey="picture">
                             <Tab eventKey="picture" title="Picture">

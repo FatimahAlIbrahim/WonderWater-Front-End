@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react'
-import { Tabs, Tab, Form } from 'react-bootstrap'
+import { Tabs, Tab, Form, Container } from 'react-bootstrap'
 import BookmarkCard from '../bookmark/BookmarkCard';
 import EditWaterBody from '../waterbodies/EditWaterBody';
 import WaterBody from '../waterbodies/WaterBody';
@@ -167,7 +167,7 @@ export default class UserProfile extends Component {
         event.target.reset();
     }
 
-    editUserHandler = (user) =>{
+    editUserHandler = (user) => {
         axios.put("/wonderwater/user/edit", user, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
@@ -191,31 +191,40 @@ export default class UserProfile extends Component {
         )
 
         let bookmarkList = this.state.bookmarks.map(bookmark =>
-            <BookmarkCard key={bookmark[1]} bookmark={bookmark} deleteBookmarkHandler={this.deleteBookmarkHandler} showDetails={this.showDetails}/>
+            <BookmarkCard key={bookmark[1]} bookmark={bookmark} deleteBookmarkHandler={this.deleteBookmarkHandler} showDetails={this.showDetails} />
         )
 
         return (
-            <div>
+            <Container className="page">
                 <Router>
-                    {this.state.allowEditUser ? 
-                    <>
-                    <Redirect to="/user/userEdit"/>
-                    <Route exact path="/user/userEdit" component={() => <UserEdit user={this.state.user } editUserHandler={this.editUserHandler}/>}/>
-                    </>
-                     : <Redirect to="/user/profile"/> }
+                    {this.state.allowEditUser ?
+                        <>
+                            <Redirect to="/user/userEdit" />
+                            <Route exact path="/user/userEdit" component={() => <UserEdit user={this.state.user} editUserHandler={this.editUserHandler} />} />
+                        </>
+                        : <Redirect to="/user/profile" />}
                 </Router>
-                {window.location.href.substr(window.location.href.lastIndexOf("/") + 1)}
+
                 {(window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "profile" || this.state.isProfile) && !this.state.allowEditUser ?
                     (<>
-                        <img src={this.state.user.picture} />
-                        <p>First Name: {this.state.user.firstName}</p>
-                        <p>Last Name: {this.state.user.lastName}</p>
-                        <p>Email Address: {this.state.user.emailAddress}</p>
-                        <p>Enter current password to be able to update your information</p>
-                        <Form inline onSubmit={this.checkPassword}>
-                            <Form.Control placeholder="Enter password here..." onChange={this.onChange} />
-                            <button type="submit" className="btn-style">Submit</button>
-                        </Form>
+                        <p className="pageTitle">User Profile</p>
+                        <div className="userInfoContainer">
+                            <img src={this.state.user.picture} />
+                            <div className="userDetails">
+                                <p>First Name: {this.state.user.firstName}</p>
+                                <p>Last Name: {this.state.user.lastName}</p>
+                                <p>Email Address: {this.state.user.emailAddress}</p>
+
+                            </div>
+                        </div>
+                        <div className="checkPasswordContainer">
+                            <p>Enter your current password and submit to be able to update your information</p>
+                            <Form inline onSubmit={this.checkPassword}>
+                                <span>Current Password</span>
+                                <Form.Control placeholder="Enter password here..." onChange={this.onChange} />
+                                <button type="submit" className="btn-style">Submit</button>
+                            </Form>
+                        </div>
                         <hr />
 
                         <Tabs transition={false} defaultActiveKey="myPosts">
@@ -223,13 +232,13 @@ export default class UserProfile extends Component {
                                 {this.state.waterBodies.length ?
                                     (<div className="cardFlex">
                                         {waterBodiesList}
-                                    </div>) : <p>There are no posts to show yet</p>}
+                                    </div>) : <p className="empty">There are no posts to show yet</p>}
                             </Tab>
                             <Tab eventKey="myBookmardks" title="My Bookmarks">
                                 {this.state.bookmarks.length ?
                                     (<div className="cardFlex">
                                         {bookmarkList}
-                                    </div>) : <p>There are no bookmarks to show yet</p>}
+                                    </div>) : <p className="empty">There are no bookmarks to show yet</p>}
                             </Tab>
                         </Tabs>
                     </>
@@ -237,12 +246,10 @@ export default class UserProfile extends Component {
                     (window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "edit" ?
                         <EditWaterBody user={this.state.user} waterBody={this.state.editWaterBody} editWaterBodyHandler={this.editWaterBodyHandler} />
                         : (window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "details" ?
-                        <WaterBody isAuth={this.props.isAuth} user={this.state.user} waterBody={this.state.detailWaterBody} /> : null)
-                        )
+                            <WaterBody isAuth={this.props.isAuth} user={this.state.user} waterBody={this.state.detailWaterBody} /> : null)
+                    )
                 }
-
-
-            </div>
+            </Container>
         )
     }
 }

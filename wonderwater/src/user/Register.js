@@ -48,7 +48,6 @@ export default class Register extends Component {
 
     render() {
         return (
-            <div className="page">
                 <Container>
                 <p className="pageTitle">Register</p>
                     <Form onSubmit={this.registerHandler}>
@@ -80,7 +79,6 @@ export default class Register extends Component {
                         <button className="btn-style btn-block" type="submit">Register</button>
                     </Form>
                 </Container>
-            </div>
         )
     }
 }

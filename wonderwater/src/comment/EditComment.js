@@ -32,7 +32,7 @@ export default class EditComment extends Component {
                  <Container>
                     <Form onSubmit={this.editCommentHandler}>
                         <Form.Group>
-                            <Form.Label>Comment Body</Form.Label>
+                            <Form.Label>Comment</Form.Label>
                             <Form.Control as="textarea" name="commentBody" onChange={this.changeHandler} value={this.state.comment.commentBody} required></Form.Control>
                         </Form.Group>
                         <button className="btn-style btn-block" type="submit">Edit Comment</button>

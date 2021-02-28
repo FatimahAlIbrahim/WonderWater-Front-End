@@ -8,7 +8,7 @@ import Home from './Home';
 import AddWaterBody from './waterbodies/AddWaterBody';
 import WaterBodiesIndex from './waterbodies/WaterBodiesIndex';
 import UserProfile from './user/UserProfile';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, Alert } from 'react-bootstrap';
 import './App.css'
 import SearchWaterBodies from './waterbodies/SearchWaterBodies';
 import WaterBody from './waterbodies/WaterBody';
@@ -26,7 +26,8 @@ class App extends Component {
       userBookmarks: null,
       message: null,
       messageType: null,
-      detailWaterBody: null
+      detailWaterBody: null,
+      hideAlert: true
     }
   }
 
@@ -58,10 +59,11 @@ class App extends Component {
   registerHandler = (user) => {
     axios.post("/wonderwater/user/registration", user)
       .then(response => {
-        console.log(response);
+        this.handleAlert("Created an account successfully!","success");
         this.props.history.push("/login");
       })
       .catch(error => {
+        this.handleAlert("An error occurred while creating an account. Please try again later","danger");
         console.log(error);
       })
   }
@@ -78,24 +80,26 @@ class App extends Component {
           let userDataTemp = {};
           let userBookmarksTemp = [];
           let userWaterBodiesTemp = [];
+
+          // get the user details from the subject of the token
           axios.get(`/wonderwater/user/userInfo?email=${user.sub}`).then(response => {
-            console.log(response);
             if (response.data != null) {
               userDataTemp = { ...response.data };
-              console.log("user data is")
-              console.log(userDataTemp)
               this.setState({
                 userData: { ...userDataTemp }
               })
+
+              // get the waterbodies that the user added
               axios.get(`/wonderwater/waterbody/find?id=${userDataTemp.id}`).then(response => {
-                console.log(response);
                 userWaterBodiesTemp = response.data;
                 this.setState({
                   userWaterBodies: userWaterBodiesTemp
                 })
               }).catch(error => {
-                console.log(error);
+                this.handleAlert("An error occurred while getting your posts. Please try logging in again later","danger");
               })
+
+              // get the user bookmarks
               axios.get(`/wonderwater/bookmark/find?id=${userDataTemp.id}`).then(response => {
                 console.log(response)
                 userBookmarksTemp = response.data
@@ -103,11 +107,11 @@ class App extends Component {
                   userBookmarks: userBookmarksTemp
                 })
               }).catch(error => {
-                console.log(error);
+                this.handleAlert("An error occurred while getting your bookmarks. Please try logging in again later","danger");
               })
             }
           }).catch(error => {
-            console.log(error);
+            this.handleAlert("An error occurred while getting your information. Please try logging in again later","danger");
           })
           this.setState({
             isAuth: true,
@@ -115,22 +119,20 @@ class App extends Component {
             userData: { ...userDataTemp },
             userWaterBodies: userWaterBodiesTemp,
             userBookmarks: userBookmarksTemp,
-            message: "Successfully loged in!",
-            messageType: "success",
           })
+          this.handleAlert("Successfully logged in!","success");
           this.props.history.push("/");
         }
         else {
           this.setState({
             isAuth: false,
             user: user,
-            message: "incorrect username or password",
-            messageType: "danger"
           })
+          this.handleAlert("incorrect username or password","danger");
         }
       })
       .catch(error => {
-        console.log(error);
+        this.handleAlert("An error occurred while logging in. Please try again later","danger");
       })
   }
 
@@ -142,6 +144,7 @@ class App extends Component {
       user: null,
       userData: null,
     })
+    this.handleAlert("Successfully logged out!","success");
     this.props.history.push("/login");
   }
 
@@ -152,11 +155,11 @@ class App extends Component {
       }
     })
       .then(response => {
-        console.log(response);
+        this.handleAlert("Successfully added a water body out!","success");
         this.props.history.push("/waterbody/index");
       })
       .catch(error => {
-        console.log(error);
+        this.handleAlert("An error occurred while adding the water body. Please try again later","danger");
       })
   }
 
@@ -167,7 +170,24 @@ class App extends Component {
     this.props.history.push("/waterbody/details");
   }
 
+  handleAlert = (message, messageType) => {
+    console.log(message + " " + messageType)
+    this.setState({
+      message: message,
+      messageType: messageType,
+      hideAlert: false
+    })
+
+    setTimeout(() => {
+      this.setState({
+        hideAlert: true
+      });
+    }, 5000);
+
+  }
+
   render() {
+    const showAlert = <Alert className={!this.state.hideAlert ? "fade-out" : null} variant={this.state.messageType}>{this.state.message}</Alert>;
     return (
       <div>
         {this.state.isAuth ? (
@@ -187,11 +207,12 @@ class App extends Component {
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
+            {this.state.hideAlert ? null : showAlert}
 
             <Route exact path="/" component={Home} />
-            <Route exact path="/waterbody/add" component={() => <AddWaterBody user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
-            <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />
-            <Route exact path="/user/profile" component={() => <UserProfile isAuth={this.state.isAuth} user={this.state.userData} waterBodies={this.state.userWaterBodies} bookmarks={this.state.userBookmarks} />} />
+            <Route exact path="/waterbody/add" component={() => <AddWaterBody handleAlert={this.handleAlert} user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
+            <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex handleAlert={this.handleAlert} isAuth={this.state.isAuth} userData={this.state.userData} />} />
+            <Route exact path="/user/profile" component={() => <UserProfile handleAlert={this.handleAlert} isAuth={this.state.isAuth} user={this.state.userData} waterBodies={this.state.userWaterBodies} bookmarks={this.state.userBookmarks} />} />
           </div>
         ) : (
             <div>
@@ -209,6 +230,7 @@ class App extends Component {
                   </Nav>
                 </Navbar.Collapse>
               </Navbar>
+              {this.state.hideAlert ? null : showAlert}
 
               <Route exact path="/" component={Home} />
               <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />

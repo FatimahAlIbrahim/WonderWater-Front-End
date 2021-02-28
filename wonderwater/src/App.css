@@ -37,6 +37,7 @@
     font-weight: 900;
     font-size: 1.5em;
     text-transform: capitalize;
+    color: #1e2761;
 }
 
 .homeDiv img{
@@ -141,8 +142,6 @@ a:hover {
 
 .page {
     margin-bottom: 5%;
-    padding-left: 2%;
-    padding-right: 2%;
 }
 
 .form-label {
@@ -160,7 +159,184 @@ a:hover {
 .searchResult {
     background-color: white;
     position: absolute;
-    width: inherit;
+    z-index: 1;
+    width: -webkit-fill-available;
+    border: solid thin #ced4da;
+    border-top: none;
+    border-bottom-right-radius: 1%;
+    border-bottom-left-radius: 1%;
+    overflow-y: auto;
+    height: 150px;
+    padding: .5%;
+}
+
+.searchResult p {
+    width: auto;
+    vertical-align: middle;
+    font-size: 1.25rem;
+    margin: 2%;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.detailsNameDiv {
+    font-size: 2em;
+    text-transform: capitalize;
+    color: #7a2048;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.detailsOthersDiv {
+    display: flex;
+    flex-direction: row;
+    border-top: solid thin #7a2048;
+    border-bottom: solid thin #7a2048;
+    font-size: 1.25em;
+    color: #1e2761;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 5%;
+    padding-top: 1%;
+}
+
+.description {
+    color: #1e2761;
+    padding: 0%;
+}
+
+.description .ql-editor {
+    font-size: 2em;
+    text-align: justify;
+}
+
+.commentContainer {
+    display: flex;
+    flex-direction: row;
+    margin: 2% 0%;
+}
+
+.commentUserImage{
+    width: 10%;
+}
+
+.commentUserImage img{
+    border-radius: 50%;
+    width: 100%;
+}
+
+.commentBody {
+    border: solid thin #1e2761;
+    border-radius: 10px;
+    width: 90%;
+    margin-left: 4%;
+    padding: 1%;
+    position: relative;
+}
+
+.commentBody #writer {
+    font-size: 1.25rem;
+    padding-bottom: 0.5%;
+    border-bottom: thin solid #1e2761;
+}
+
+.commentBody div {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin-top: 1%;
+    margin-right: 1%;
+    cursor: pointer;
+}
+
+.commentBody div span{
+    margin: 5px;
+}
+
+.sectionTitle{
+    font-size: 1.5em;
+    margin-top: 2%;
+    color: #1e2761;
+    border-bottom: solid thin #1e2761;
+}
+
+.userInfoContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.userInfoContainer img {
+    border-radius: 50%;
+    width: 20%;
+    margin-right: 5%;
+}
+
+.userDetails {
+    font-size: 1.25em;
+    color: #1e2761;
+}
+
+.checkPasswordContainer {
+    border: solid thin #1e2761;
+    border-radius: 10px;
+    padding: 2%;
+    margin-top: 2%;
+}
+
+.checkPasswordContainer p {
+    font-size: 1.1em;
+    color: #1e2761;
+}
+
+.checkPasswordContainer span {
+    font-size: 1.1em;
+    color: #1e2761;
+    margin-right: 1%;
+}
+
+.empty {
+    text-align: center;
+    font-size: 1.2em;
+    color: rgb(172, 172, 172);
+}
+
+.alert {
+    margin-bottom: 0px !important; 
+}
+
+.fade-out {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 5.25s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 1;
+	}
+    20% {
+        opacity: 1;
+    }
+    40% {
+        opacity: .8;
+    }
+    60% {
+        opacity: .4;
+    }
+    80% {
+        opacity: .2;
+    }
+	100% {
+		opacity: 0;
+	}
 }
 
 @media (max-width: 700px) {
