@@ -17,7 +17,7 @@ export default class SearchWaterBodies extends Component {
 
     componentDidMount() {
         this.loadWaterBodies();
-        setInterval(() => { this.loadWaterBodies() }, 60000);
+        // setInterval(() => { this.loadWaterBodies() }, 60000);
     }
 
     loadWaterBodies = () => {
