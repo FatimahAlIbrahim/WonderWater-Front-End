@@ -28,7 +28,6 @@ export default class WaterBodiesIndex extends Component {
     loadWaterBodies = () => {
         axios.get(`${process.env.REACT_APP_BACK_END_URL}waterbody/index`)
             .then(response => {
-                console.log(response.data)
                 this.setState({
                     waterBodies: response.data,
                     filteredWaterBodies: response.data,

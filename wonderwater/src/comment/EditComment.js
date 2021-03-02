@@ -15,7 +15,6 @@ export default class EditComment extends Component {
     changeHandler = (event) => {
         let commentTemp = { ...this.state.comment };
         commentTemp[event.target.name] = event.target.value;
-        console.log(commentTemp)
         this.setState({
             comment: commentTemp
         });

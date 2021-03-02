@@ -66,14 +66,12 @@ class App extends Component {
       })
       .catch(error => {
         this.handleAlert("An error occurred while creating an account. Please try again later","danger");
-        console.log(error);
       })
   }
 
   loginHandler = (user) => {
     axios.post(`${process.env.REACT_APP_BACK_END_URL}user/authentication`, user)
       .then(response => {
-        console.log(response);
 
         if (response.data.token != null) {
           localStorage.setItem("token", response.data.token);
@@ -103,7 +101,6 @@ class App extends Component {
 
               // get the user bookmarks
               axios.get(`${process.env.REACT_APP_BACK_END_URL}bookmark/find?id=${userDataTemp.id}`).then(response => {
-                console.log(response)
                 userBookmarksTemp = response.data
                 this.setState({
                   userBookmarks: userBookmarksTemp
