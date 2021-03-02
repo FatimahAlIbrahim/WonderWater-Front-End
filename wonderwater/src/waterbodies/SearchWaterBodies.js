@@ -9,7 +9,7 @@ export default class SearchWaterBodies extends Component {
         super(props)
 
         this.state = {
-            waterBodies: this.props.waterBodies,
+            waterBodies: null,
             filterResult: null,
             filterValue: ""
         }
@@ -21,7 +21,7 @@ export default class SearchWaterBodies extends Component {
     }
 
     loadWaterBodies = () => {
-        axios.get("/wonderwater/waterbody/index")
+        axios.get(`${process.env.REACT_APP_BACK_END_URL}waterbody/index`)
             .then(response => {
                 this.setState({
                     waterBodies: response.data

@@ -32,7 +32,7 @@ export default class UserProfile extends Component {
     }
 
     loadWaterBodies = () => {
-        axios.get(`/wonderwater/waterbody/find?id=${this.state.user.id}`).then(response => {
+        axios.get(`${process.env.REACT_APP_BACK_END_URL}waterbody/find?id=${this.state.user.id}`).then(response => {
             this.setState({
                 waterBodies: response.data,
                 isProfile: true
@@ -43,7 +43,7 @@ export default class UserProfile extends Component {
     }
 
     loadBookmarks = () => {
-        axios.get(`/wonderwater/bookmark/find?id=${this.state.user.id}`).then(response => {
+        axios.get(`${process.env.REACT_APP_BACK_END_URL}bookmark/find?id=${this.state.user.id}`).then(response => {
             this.setState({
                 bookmarks: response.data
             })
@@ -53,7 +53,7 @@ export default class UserProfile extends Component {
     }
 
     loadUserData = () => {
-        axios.get(`/wonderwater/user/userInfo?email=${this.state.user.emailAddress}`).then(response => {
+        axios.get(`${process.env.REACT_APP_BACK_END_URL}user/userInfo?email=${this.state.user.emailAddress}`).then(response => {
             this.setState({
                 user: { ...response.data },
                 allowEditUser: false,
@@ -65,7 +65,7 @@ export default class UserProfile extends Component {
     }
 
     deleteWaterBody = (id) => {
-        axios.delete(`/wonderwater/waterbody/delete?id=${id}`, {
+        axios.delete(`${process.env.REACT_APP_BACK_END_URL}waterbody/delete?id=${id}`, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
@@ -82,7 +82,7 @@ export default class UserProfile extends Component {
     }
 
     editWaterBodyHandler = (waterBody) => {
-        axios.put("/wonderwater/waterbody/edit", waterBody, {
+        axios.put(`${process.env.REACT_APP_BACK_END_URL}waterbody/edit`, waterBody, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
@@ -113,7 +113,7 @@ export default class UserProfile extends Component {
     }
 
     deleteBookmarkHandler = (id) => {
-        axios.delete(`/wonderwater/bookmark/delete?id=${id}`, {
+        axios.delete(`${process.env.REACT_APP_BACK_END_URL}bookmark/delete?id=${id}`, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
@@ -136,7 +136,7 @@ export default class UserProfile extends Component {
 
     checkPassword = (event) => {
         event.preventDefault();
-        axios.post("/wonderwater/user/checkPassword", { "id": this.state.user.id, "password": this.state.password }, {
+        axios.post(`${process.env.REACT_APP_BACK_END_URL}user/checkPassword`, { "id": this.state.user.id, "password": this.state.password }, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
@@ -164,7 +164,7 @@ export default class UserProfile extends Component {
     }
 
     editUserHandler = (user) => {
-        axios.put("/wonderwater/user/edit", user, {
+        axios.put(`${process.env.REACT_APP_BACK_END_URL}user/edit`, user, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }

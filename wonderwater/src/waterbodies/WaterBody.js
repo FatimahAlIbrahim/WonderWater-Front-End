@@ -29,7 +29,7 @@ export default class WaterBody extends Component {
     }
 
     loadWaterBodyDetails = () => {
-        axios.get(`/wonderwater/waterbody/details?id=${this.props.waterBody.waterBodyId}`)
+        axios.get(`${process.env.REACT_APP_BACK_END_URL}waterbody/details?id=${this.props.waterBody.waterBodyId}`)
             .then(response => {
                 this.setState({
                     waterBody: response.data,
@@ -42,7 +42,7 @@ export default class WaterBody extends Component {
     }
 
     addCommentHandler = (comment) => {
-        axios.post("/wonderwater/comment/add", comment, {
+        axios.post(`${process.env.REACT_APP_BACK_END_URL}comment/add`, comment, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
@@ -57,7 +57,7 @@ export default class WaterBody extends Component {
     }
 
     deleteCommentHandler = (id) => {
-        axios.delete(`/wonderwater/comment/delete?id=${id}`, {
+        axios.delete(`${process.env.REACT_APP_BACK_END_URL}comment/delete?id=${id}`, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
@@ -72,7 +72,7 @@ export default class WaterBody extends Component {
     }
 
     editCommentHandler = (comment) => {
-        axios.put("/wonderwater/comment/edit", comment, {
+        axios.put(`${process.env.REACT_APP_BACK_END_URL}comment/edit`, comment, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
@@ -93,7 +93,7 @@ export default class WaterBody extends Component {
     }
 
     addBookmarkHandler = () => {
-        axios.post("/wonderwater/bookmark/add", { "user": { ...this.props.user }, "waterBody": { ...this.state.waterBody } }, {
+        axios.post(`${process.env.REACT_APP_BACK_END_URL}bookmark/add`, { "user": { ...this.props.user }, "waterBody": { ...this.state.waterBody } }, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
@@ -107,7 +107,7 @@ export default class WaterBody extends Component {
     }
 
     deleteBookmarkHandler = () => {
-        axios.delete(`/wonderwater/bookmark/delete?id=${this.state.waterBody.bookmarks[this.state.waterBody.bookmarks.findIndex(bookmark => bookmark.user.id === this.props.user.id)].bookmarkId}`, {
+        axios.delete(`${process.env.REACT_APP_BACK_END_URL}bookmark/delete?id=${this.state.waterBody.bookmarks[this.state.waterBody.bookmarks.findIndex(bookmark => bookmark.user.id === this.props.user.id)].bookmarkId}`, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }

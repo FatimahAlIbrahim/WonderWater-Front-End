@@ -26,7 +26,7 @@ export default class WaterBodiesIndex extends Component {
     }
 
     loadWaterBodies = () => {
-        axios.get("/wonderwater/waterbody/index")
+        axios.get(`${process.env.REACT_APP_BACK_END_URL}waterbody/index`)
             .then(response => {
                 console.log(response.data)
                 this.setState({
@@ -41,7 +41,7 @@ export default class WaterBodiesIndex extends Component {
     }
 
     deleteWaterBody = (id) => {
-        axios.delete(`/wonderwater/waterbody/delete?id=${id}`, {
+        axios.delete(`${process.env.REACT_APP_BACK_END_URL}waterbody/delete?id=${id}`, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
@@ -56,7 +56,7 @@ export default class WaterBodiesIndex extends Component {
     }
 
     editWaterBodyHandler = (waterBody) => {
-        axios.put("/wonderwater/waterbody/edit", waterBody, {
+        axios.put(`${process.env.REACT_APP_BACK_END_URL}waterbody/edit`, waterBody, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }

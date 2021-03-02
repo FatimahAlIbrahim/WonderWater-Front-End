@@ -12,10 +12,11 @@ import { Nav, Navbar, Alert } from 'react-bootstrap';
 import './App.css'
 import SearchWaterBodies from './waterbodies/SearchWaterBodies';
 import WaterBody from './waterbodies/WaterBody';
-
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import dotenv from 'dotenv';
 
+dotenv.config();
 toast.configure()
 class App extends Component {
 
@@ -58,7 +59,7 @@ class App extends Component {
   }
 
   registerHandler = (user) => {
-    axios.post("/wonderwater/user/registration", user)
+    axios.post(`${process.env.REACT_APP_BACK_END_URL}user/registration`, user)
       .then(response => {
         this.handleAlert("Created an account successfully!","success");
         this.props.history.push("/login");
@@ -70,7 +71,7 @@ class App extends Component {
   }
 
   loginHandler = (user) => {
-    axios.post("/wonderwater/user/authentication", user)
+    axios.post(`${process.env.REACT_APP_BACK_END_URL}user/authentication`, user)
       .then(response => {
         console.log(response);
 
@@ -83,7 +84,7 @@ class App extends Component {
           let userWaterBodiesTemp = [];
 
           // get the user details from the subject of the token
-          axios.get(`/wonderwater/user/userInfo?email=${user.sub}`).then(response => {
+          axios.get(`${process.env.REACT_APP_BACK_END_URL}user/userInfo?email=${user.sub}`).then(response => {
             if (response.data != null) {
               userDataTemp = { ...response.data };
               this.setState({
@@ -91,7 +92,7 @@ class App extends Component {
               })
 
               // get the waterbodies that the user added
-              axios.get(`/wonderwater/waterbody/find?id=${userDataTemp.id}`).then(response => {
+              axios.get(`${process.env.REACT_APP_BACK_END_URL}waterbody/find?id=${userDataTemp.id}`).then(response => {
                 userWaterBodiesTemp = response.data;
                 this.setState({
                   userWaterBodies: userWaterBodiesTemp
@@ -101,7 +102,7 @@ class App extends Component {
               })
 
               // get the user bookmarks
-              axios.get(`/wonderwater/bookmark/find?id=${userDataTemp.id}`).then(response => {
+              axios.get(`${process.env.REACT_APP_BACK_END_URL}bookmark/find?id=${userDataTemp.id}`).then(response => {
                 console.log(response)
                 userBookmarksTemp = response.data
                 this.setState({
@@ -150,7 +151,7 @@ class App extends Component {
   }
 
   addWaterBodyHandler = (waterBody) => {
-    axios.post("/wonderwater/waterbody/add", waterBody, {
+    axios.post(`${process.env.REACT_APP_BACK_END_URL}waterbody/add`, waterBody, {
       headers: {
         "Authorization": "Bearer " + localStorage.getItem("token")
       }
@@ -182,7 +183,6 @@ class App extends Component {
   }
 
   render() {
-    // const showAlert = <Alert variant={this.state.messageType}>{this.state.message}</Alert>;
     return (
       <div>
         {this.state.isAuth ? (
