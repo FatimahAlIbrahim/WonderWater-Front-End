@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Tabs, Tab } from 'react-bootstrap'
+import { Tabs, Tab, Container } from 'react-bootstrap'
 import AddComment from '../comment/AddComment'
 import CommentIndex from '../comment/CommentIndex'
 import axios from 'axios'
@@ -31,14 +31,13 @@ export default class WaterBody extends Component {
     loadWaterBodyDetails = () => {
         axios.get(`/wonderwater/waterbody/details?id=${this.props.waterBody.waterBodyId}`)
             .then(response => {
-                console.log(response)
                 this.setState({
                     waterBody: response.data,
                     editComment: null
                 })
             })
             .catch(error => {
-                console.log(error)
+                this.props.handleAlert("An error occurred while loading the water body details. Please try again later", "danger");
             })
     }
 
@@ -49,11 +48,11 @@ export default class WaterBody extends Component {
             }
         })
             .then(response => {
-                console.log(response);
                 this.loadWaterBodyDetails();
+                this.props.handleAlert("Successfully added a comment!", "success");
             })
             .catch(error => {
-                console.log(error);
+                this.props.handleAlert("An error occurred while adding the comment. Please try again later", "danger");
             })
     }
 
@@ -64,11 +63,11 @@ export default class WaterBody extends Component {
             }
         })
             .then(response => {
-                console.log(response)
                 this.loadWaterBodyDetails();
+                this.props.handleAlert("Successfully deleted the comment!", "success");
             })
             .catch(error => {
-                console.log(error)
+                this.props.handleAlert("An error occurred while deleting the comment. Please try again later", "danger");
             })
     }
 
@@ -79,11 +78,11 @@ export default class WaterBody extends Component {
             }
         })
             .then(response => {
-                console.log(response)
                 this.loadWaterBodyDetails();
+                this.props.handleAlert("Successfully edited the comment!", "success");
             })
             .catch(error => {
-                console.log(error)
+                this.props.handleAlert("An error occurred while editing the comment. Please try again later", "danger");
             })
     }
 
@@ -100,11 +99,10 @@ export default class WaterBody extends Component {
             }
         })
             .then(response => {
-                console.log(response);
                 this.loadWaterBodyDetails();
             })
             .catch(error => {
-                console.log(error);
+                this.props.handleAlert("An error occurred while bookmarking this water body. Please try again later", "danger");
             })
     }
 
@@ -115,17 +113,16 @@ export default class WaterBody extends Component {
             }
         })
             .then(response => {
-                console.log(response)
                 this.loadWaterBodyDetails();
             })
             .catch(error => {
-                console.log(error)
+                this.props.handleAlert("An error occurred while removing the bookmark from this water body. Please try again later", "danger");
             })
     }
 
     render() {
         return (
-            <div className="page">
+            <Container className="page">
                 <p className="pageTitle">Waterbody Details</p>
                 <Tabs transition={false} defaultActiveKey="picture">
                     <Tab eventKey="picture" title="Picture">
@@ -161,7 +158,7 @@ export default class WaterBody extends Component {
                 {this.props.isAuth && this.state.waterBody.comments.findIndex(comment => comment.user.id === this.props.user.id) === -1 && this.state.waterBody.user.id !== this.props.user.id ? <AddComment addCommentHandler={this.addCommentHandler} user={this.props.user} waterBody={this.state.waterBody} /> : null}
                 {this.props.isAuth && this.state.waterBody.comments.findIndex(comment => comment.user.id === this.props.user.id) !== -1 && this.state.editComment != null ? <EditComment waterBody={this.state.waterBody} editCommentHandler={this.editCommentHandler} comment={this.state.editComment} /> : null}
                 {this.state.waterBody.comments.length ? <CommentIndex isAuth={this.props.isAuth} user={this.props.user} comments={this.state.waterBody.comments} deleteCommentHandler={this.deleteCommentHandler} getEditComment={this.getEditComment} /> : null}
-            </div>
+            </Container>
         )
     }
 }

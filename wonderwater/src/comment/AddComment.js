@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Form, Button, Container} from 'react-bootstrap'
+import {Form, Container} from 'react-bootstrap'
 
 export default class AddComment extends Component {
 

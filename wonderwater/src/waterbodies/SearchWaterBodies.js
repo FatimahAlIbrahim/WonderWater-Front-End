@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
-import WaterBody from './WaterBody';
 import { FormControl } from 'react-bootstrap';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 export default class SearchWaterBodies extends Component {
 
@@ -10,7 +9,7 @@ export default class SearchWaterBodies extends Component {
         super(props)
 
         this.state = {
-            waterBodies: null,
+            waterBodies: this.props.waterBodies,
             filterResult: null,
             filterValue: ""
         }
@@ -18,18 +17,18 @@ export default class SearchWaterBodies extends Component {
 
     componentDidMount() {
         this.loadWaterBodies();
+        setInterval(() => { this.loadWaterBodies() }, 60000);
     }
 
     loadWaterBodies = () => {
         axios.get("/wonderwater/waterbody/index")
             .then(response => {
-                console.log(response)
                 this.setState({
                     waterBodies: response.data
                 })
             })
             .catch(error => {
-                console.log(error)
+                this.props.handleAlert("An error occurred while getting the water bodies for search. Please try again later","danger");
             })
     }
 
@@ -39,13 +38,12 @@ export default class SearchWaterBodies extends Component {
         if (!filterValue) {
             this.setState({
                 filterResult: null,
-                filterValue: null
+                filterValue: ""
             })
         } else {
             const filterResult = this.state.waterBodies.filter((waterBody) => {
                 return waterBody.name.toLowerCase().includes(filterValue.toLowerCase())
             })
-            console.log(filterResult)
             this.setState({
                 filterResult: filterResult,
                 filterValue: filterValue
@@ -64,16 +62,18 @@ export default class SearchWaterBodies extends Component {
     render() {
         return (
             <div style={{ position: "relative", top: "13%" }}>
-                    <FormControl style={{ position: "relative", top: "13%" }} type="text" value={this.state.filterValue} placeholder="Search" onChange={this.changeHandler} />
-                    {this.state.filterResult ?
-                        <div className="searchResult">
-                            <Router>
-                                {this.state.filterResult.map((waterBody, index) =>
-                                    <p key={index}>
-                                        <Link to="/waterbody/details" onClick={() => this.handleClick(waterBody)}>{waterBody.name} {waterBody.type}</Link>
-                                    </p>
-                                )}
-                            </Router></div> : null}
+                <FormControl style={{ position: "relative", top: "13%" }} type="text" value={this.state.filterValue} placeholder="Search" onChange={this.changeHandler} />
+                {this.state.filterResult ?
+                    <div className="searchResult">
+                        <Router>
+                            {this.state.filterResult.map((waterBody, index) =>
+                                <p key={index}>
+                                    <Link to="/waterbody/details" onClick={() => this.handleClick(waterBody)}>{waterBody.name} {waterBody.type}</Link>
+                                </p>
+                            )}
+                        </Router>
+                    </div>
+                    : null}
             </div>
         )
     }

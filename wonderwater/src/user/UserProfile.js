@@ -5,7 +5,7 @@ import BookmarkCard from '../bookmark/BookmarkCard';
 import EditWaterBody from '../waterbodies/EditWaterBody';
 import WaterBody from '../waterbodies/WaterBody';
 import WaterBodyCard from '../waterbodies/WaterBodyCard';
-import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import UserEdit from './UserEdit';
 
 export default class UserProfile extends Component {
@@ -33,37 +33,34 @@ export default class UserProfile extends Component {
 
     loadWaterBodies = () => {
         axios.get(`/wonderwater/waterbody/find?id=${this.state.user.id}`).then(response => {
-            console.log(response);
             this.setState({
                 waterBodies: response.data,
                 isProfile: true
             })
         }).catch(error => {
-            console.log(error);
+            this.props.handleAlert("An error occurred while loading your water bodies. Please try again later", "danger");
         })
     }
 
     loadBookmarks = () => {
         axios.get(`/wonderwater/bookmark/find?id=${this.state.user.id}`).then(response => {
-            console.log(response)
             this.setState({
                 bookmarks: response.data
             })
         }).catch(error => {
-            console.log(error);
+            this.props.handleAlert("An error occurred while loading your bookmarks. Please try again later", "danger");
         })
     }
 
     loadUserData = () => {
         axios.get(`/wonderwater/user/userInfo?email=${this.state.user.emailAddress}`).then(response => {
-            console.log(response);
             this.setState({
                 user: { ...response.data },
                 allowEditUser: false,
                 password: null,
             })
         }).catch(error => {
-            console.log(error)
+            this.props.handleAlert("An error occurred while loading your information. Please try again later", "danger");
         })
     }
 
@@ -74,13 +71,13 @@ export default class UserProfile extends Component {
             }
         })
             .then(response => {
-                console.log(response)
                 this.loadUserData();
                 this.loadWaterBodies();
                 this.loadBookmarks();
+                this.props.handleAlert("Successfully deleted a water body!", "success");
             })
             .catch(error => {
-                console.log(error)
+                this.props.handleAlert("An error occurred while deleting the water body. Please try again later", "danger");
             })
     }
 
@@ -91,13 +88,13 @@ export default class UserProfile extends Component {
             }
         })
             .then(response => {
-                console.log(response)
                 this.loadUserData();
                 this.loadWaterBodies();
                 this.loadBookmarks();
+                this.props.handleAlert("Successfully edited a water body!", "success");
             })
             .catch(error => {
-                console.log(error)
+                this.props.handleAlert("An error occurred while editing the water body. Please try again later", "danger");
             })
     }
 
@@ -122,13 +119,12 @@ export default class UserProfile extends Component {
             }
         })
             .then(response => {
-                console.log(response)
                 this.loadUserData();
                 this.loadWaterBodies();
                 this.loadBookmarks();
             })
             .catch(error => {
-                console.log(error)
+                this.props.handleAlert("An error occurred while deleting the bookmark. Please try again later", "danger");
             })
     }
 
@@ -146,7 +142,6 @@ export default class UserProfile extends Component {
             }
         })
             .then(response => {
-                console.log(response)
                 if (response.data == true) {
                     this.setState({
                         password: null,
@@ -159,10 +154,11 @@ export default class UserProfile extends Component {
                         password: null,
                         allowEditUser: false
                     })
+                    this.props.handleAlert("Please enter the correct password", "danger");
                 }
             })
             .catch(error => {
-                console.log(error)
+                this.props.handleAlert("An error occurred while checking your password. Please try again later", "danger");
             })
         event.target.reset();
     }
@@ -174,13 +170,13 @@ export default class UserProfile extends Component {
             }
         })
             .then(response => {
-                console.log(response)
                 this.loadUserData();
                 this.loadWaterBodies();
                 this.loadBookmarks();
+                this.props.handleAlert("Successfully updated your information!", "success");
             })
             .catch(error => {
-                console.log(error)
+                this.props.handleAlert("An error occurred while updating your information. Please try again later", "danger");
             })
     }
 
@@ -246,7 +242,7 @@ export default class UserProfile extends Component {
                     (window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "edit" ?
                         <EditWaterBody user={this.state.user} waterBody={this.state.editWaterBody} editWaterBodyHandler={this.editWaterBodyHandler} />
                         : (window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "details" ?
-                            <WaterBody isAuth={this.props.isAuth} user={this.state.user} waterBody={this.state.detailWaterBody} /> : null)
+                            <WaterBody handleAlert={(message, messageType) => { this.props.handleAlert(message, messageType) }} isAuth={this.props.isAuth} user={this.state.user} waterBody={this.state.detailWaterBody} /> : null)
                     )
                 }
             </Container>

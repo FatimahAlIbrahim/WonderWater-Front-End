@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Container, Form } from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 
 export default class UserEdit extends Component {
 
@@ -8,7 +8,8 @@ export default class UserEdit extends Component {
 
         this.state = {
             userInfo: { ...this.props.user },
-            image: this.props.user.picture
+            image: this.props.user.picture,
+            errors: {}
         }
     }
 
@@ -16,10 +17,35 @@ export default class UserEdit extends Component {
         let userInfoTemp = { ...this.state.userInfo };
         userInfoTemp[event.target.name] = event.target.value;
         if (event.target.name == "picture") {
-            this.setState({
-                userInfo: userInfoTemp,
-                image: event.target.value
-            });
+            const imageRegex = new RegExp('jpg|png|jpeg{1}')
+            if (!imageRegex.test(event.target.value)) {
+                this.setState({
+                    userInfo: userInfoTemp,
+                    image: event.target.value,
+                    errors: {...this.state.errors, "picture": "please enter a valid image"}
+                });
+            }
+            else{
+                this.setState({
+                    userInfo: userInfoTemp,
+                    image: event.target.value,
+                    errors: {...this.state.errors, "picture": null}
+                });
+            }
+        }
+        else if(event.target.name == "cpassword") {
+            if(this.state.userInfo.password !== event.target.value){
+                this.setState({
+                    userInfo: userInfoTemp,
+                    errors: {...this.state.errors, "password": "password and confirm password must be the same"}
+                });
+            }
+            else{
+                this.setState({
+                    userInfo: userInfoTemp,
+                    errors: {...this.state.errors, "password": null}
+                });
+            }
         }
         else {
             this.setState({
@@ -31,24 +57,20 @@ export default class UserEdit extends Component {
 
     editUserHandler = (event) => {
         event.preventDefault()
-        if (this.state.userInfo.password !== this.state.userInfo.cpassword) {
-            console.log("password and confirm password must be equal")
-        }
-        else {
+        if(this.state.errors["picture"] == null && this.state.errors["password"] == null){
             this.props.editUserHandler(this.state.userInfo);
         }
-
     }
 
     render() {
         return (
             <div>
-                <Container>
+                <Container className="page">
                 <p className="pageTitle">Edit Personal Information</p>
                     <Form onSubmit={this.editUserHandler}>
-                        <img width="300" height="300" src={this.state.image ? this.state.image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7HrjlxizejA_sfkfPhIaAdv5Cxy6A-HGFzA&usqp=CAU"} />
+                        <img className="registerImage" width="300" height="300" src={this.state.image ? this.state.image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7HrjlxizejA_sfkfPhIaAdv5Cxy6A-HGFzA&usqp=CAU"} />
                         <Form.Group>
-                            <Form.Label>Picture</Form.Label>
+                            <Form.Label>Picture</Form.Label> <span className="error">{this.state.errors["picture"] ? ` ${this.state.errors["picture"]}` : null}</span>
                             <Form.Control type="url" name="picture" onChange={this.changeHandler} value={this.state.userInfo.picture} required></Form.Control>
                         </Form.Group>
                         <Form.Group>
@@ -60,14 +82,14 @@ export default class UserEdit extends Component {
                             <Form.Control type="text" name="lastName" onChange={this.changeHandler} value={this.state.userInfo.lastName} required></Form.Control>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>New Password</Form.Label>
+                            <Form.Label>Password</Form.Label> <span className="error">{this.state.errors["password"] ? ` ${this.state.errors["password"]}` : null}</span>
                             <Form.Control type="password" name="password" onChange={this.changeHandler} required></Form.Control>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Confirm New Password</Form.Label>
+                            <Form.Label>Confirm Password</Form.Label> <span className="error">{this.state.errors["password"] ? ` ${this.state.errors["password"]}` : null}</span>
                             <Form.Control type="password" name="cpassword" onChange={this.changeHandler} required></Form.Control>
                         </Form.Group>
-                        <Button variant="outline-primary" block type="submit">Edit Information</Button>
+                        <button className="btn-style btn-block" type="submit">Edit Information</button>
                     </Form>
                 </Container>
             </div>

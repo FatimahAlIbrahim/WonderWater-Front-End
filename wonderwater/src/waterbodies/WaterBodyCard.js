@@ -5,6 +5,7 @@ import safe from './../images/safe.png'
 import dangerous from './../images/dangerous.png'
 import swimming from './../images/swimming.png'
 import noSwimming from './../images/noSwimming.png'
+import location from './../images/location.png'
 
 export default class WaterBodyCard extends Component {
 
@@ -35,7 +36,7 @@ export default class WaterBodyCard extends Component {
                         </Router>
                     </Card.Title>
                     <Card.Text>
-                        In {this.props.waterBody.country}
+                    <img width="20px" src={location} /> {this.props.waterBody.country}
                         <span id="controls">
                             {this.props.isAuth && this.props.userData.id == this.props.waterBody.user.id ?
                                 <><Router>

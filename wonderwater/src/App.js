@@ -13,6 +13,10 @@ import './App.css'
 import SearchWaterBodies from './waterbodies/SearchWaterBodies';
 import WaterBody from './waterbodies/WaterBody';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure()
 class App extends Component {
 
   constructor(props) {
@@ -24,10 +28,7 @@ class App extends Component {
       userData: null,
       userWaterBodies: null,
       userBookmarks: null,
-      message: null,
-      messageType: null,
       detailWaterBody: null,
-      hideAlert: true
     }
   }
 
@@ -128,7 +129,7 @@ class App extends Component {
             isAuth: false,
             user: user,
           })
-          this.handleAlert("incorrect username or password","danger");
+          this.handleAlert("Incorrect username or password","danger");
         }
       })
       .catch(error => {
@@ -155,7 +156,7 @@ class App extends Component {
       }
     })
       .then(response => {
-        this.handleAlert("Successfully added a water body out!","success");
+        this.handleAlert("Successfully added a water body!","success");
         this.props.history.push("/waterbody/index");
       })
       .catch(error => {
@@ -171,23 +172,17 @@ class App extends Component {
   }
 
   handleAlert = (message, messageType) => {
-    console.log(message + " " + messageType)
-    this.setState({
-      message: message,
-      messageType: messageType,
-      hideAlert: false
-    })
 
-    setTimeout(() => {
-      this.setState({
-        hideAlert: true
-      });
-    }, 5000);
-
+    if(messageType == "success"){
+      toast.success(message, {position: toast.POSITION.TOP_CENTER})
+    }
+    else{
+      toast.error(message, {position: toast.POSITION.TOP_CENTER})
+    }
   }
 
   render() {
-    const showAlert = <Alert className={!this.state.hideAlert ? "fade-out" : null} variant={this.state.messageType}>{this.state.message}</Alert>;
+    // const showAlert = <Alert variant={this.state.messageType}>{this.state.message}</Alert>;
     return (
       <div>
         {this.state.isAuth ? (
@@ -203,14 +198,13 @@ class App extends Component {
                 <Nav>
                   <Nav.Link as={Link} to="/user/profile">Welcome {this.state.userData.emailAddress}</Nav.Link>
                   <Nav.Link as={Link} to="/logout" onClick={this.logoutHandler}>Logout</Nav.Link>
-                  <SearchWaterBodies isAuth={this.state.isAuth} userData={this.state.userData} detailWaterBodyChangeHandler={this.detailWaterBodyChangeHandler}/>
+                  <SearchWaterBodies handleAlert={this.handleAlert} detailWaterBodyChangeHandler={this.detailWaterBodyChangeHandler}/>
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
-            {this.state.hideAlert ? null : showAlert}
 
             <Route exact path="/" component={Home} />
-            <Route exact path="/waterbody/add" component={() => <AddWaterBody handleAlert={this.handleAlert} user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
+            <Route exact path="/waterbody/add" component={() => <AddWaterBody user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
             <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex handleAlert={this.handleAlert} isAuth={this.state.isAuth} userData={this.state.userData} />} />
             <Route exact path="/user/profile" component={() => <UserProfile handleAlert={this.handleAlert} isAuth={this.state.isAuth} user={this.state.userData} waterBodies={this.state.userWaterBodies} bookmarks={this.state.userBookmarks} />} />
           </div>
@@ -226,20 +220,19 @@ class App extends Component {
                   <Nav>
                     <Nav.Link as={Link} to="/register">Register</Nav.Link>
                     <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                    <SearchWaterBodies isAuth={this.state.isAuth} userData={this.state.userData} detailWaterBodyChangeHandler={this.detailWaterBodyChangeHandler}/>
+                    <SearchWaterBodies handleAlert={this.handleAlert} detailWaterBodyChangeHandler={this.detailWaterBodyChangeHandler}/>
                   </Nav>
                 </Navbar.Collapse>
               </Navbar>
-              {this.state.hideAlert ? null : showAlert}
 
               <Route exact path="/" component={Home} />
-              <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex isAuth={this.state.isAuth} userData={this.state.userData} />} />
-              <Route exact path="/register" component={() => <Register registerHandler={this.registerHandler} />} />
+              <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex handleAlert={this.handleAlert} isAuth={this.state.isAuth} userData={this.state.userData} />} />
+              <Route exact path="/register" component={() => <Register handleAlert={this.handleAlert}registerHandler={this.registerHandler} />} />
               <Route exact path="/login" component={() => <Login loginHandler={this.loginHandler} />} />
             </div>
           )}
         {this.state.detailWaterBody ?
-          <Route exact path="/waterbody/details" component={() => <WaterBody isAuth={this.state.isAuth} user={this.state.userData} waterBody={this.state.detailWaterBody} />} />
+          <Route exact path="/waterbody/details" component={() => <WaterBody handleAlert={this.handleAlert} isAuth={this.state.isAuth} user={this.state.userData} waterBody={this.state.detailWaterBody} />} />
           : null}
       </div>
     )

@@ -8,7 +8,7 @@ export default class EditWaterBody extends Component {
 
     constructor(props) {
         super(props)
-        
+
         this.state = {
             waterBody: {
                 "user": { ...props.user },
@@ -16,24 +16,55 @@ export default class EditWaterBody extends Component {
             },
             image: props.waterBody.picture,
             video: props.waterBody.video,
+            errors: {"description": null, "picture": null, "video": null}
         }
     }
 
     changeHandler = (event) => {
         let waterBodyTemp = { ...this.state.waterBody };
         waterBodyTemp[event.target.name] = event.target.value;
-        console.log(waterBodyTemp);
         if (event.target.name == "picture") {
-            this.setState({
-                waterBody: waterBodyTemp,
-                image: event.target.value
-            });
+            const imageRegex = new RegExp('jpg|png|jpeg{1}')
+            if (!imageRegex.test(event.target.value)) {
+                this.setState({
+                    waterBody: waterBodyTemp,
+                    image: event.target.value,
+                    errors: { ...this.state.errors, "picture": "please enter a valid image" }
+                });
+            }
+            else {
+                this.setState({
+                    waterBody: waterBodyTemp,
+                    image: event.target.value,
+                    errors: { ...this.state.errors, "picture": null }
+                });
+            }
         }
         else if (event.target.name == "video") {
-            this.setState({
-                waterBody: waterBodyTemp,
-                video: event.target.value
-            });
+            if (event.target.value.includes("youtube")) {
+                const regex = new RegExp('https:\/\/www\.youtube\.com\/embed\/([a-zA-Z0-9\_-]){11}');
+                if (!regex.test(event.target.value)) {
+                    this.setState({
+                        waterBody: waterBodyTemp,
+                        video: event.target.value,
+                        errors: { ...this.state.errors, "video": "please make sure to get the embed code of the youtube video" }
+                    });
+                }
+                else {
+                    this.setState({
+                        waterBody: waterBodyTemp,
+                        video: event.target.value,
+                        errors: { ...this.state.errors, "video": null }
+                    });
+                }
+            }
+            else {
+                this.setState({
+                    waterBody: waterBodyTemp,
+                    video: event.target.value,
+                    errors: { ...this.state.errors, "video": "please make sure to get the embed code of youtube videos only" }
+                });
+            }
         }
         else {
             this.setState({
@@ -45,32 +76,25 @@ export default class EditWaterBody extends Component {
     editorChangeHandler = (html) => {
         let waterBodyTemp = { ...this.state.waterBody };
         waterBodyTemp["description"] = html;
-        console.log(waterBodyTemp);
-        this.setState({
-            waterBody: waterBodyTemp
-        })
+        if (html == "<p><br></p>" || html == null) {
+            this.setState({
+                waterBody: waterBodyTemp,
+                errors: { ...this.state.errors, "description": "please enter a description" }
+            })
+        }
+        else {
+            this.setState({
+                waterBody: waterBodyTemp,
+                errors: { ...this.state.errors, "description": null }
+            })
+        }
     }
 
     editWaterBodyHandler = (event) => {
         event.preventDefault();
-        const imageRegex = new RegExp('jpg|png|jpeg{1}')
-        if (imageRegex.test(this.state.waterBody.picture)) {
-            let video = this.state.waterBody.video;
-            if (video.includes("youtube")) {
-                const regex = new RegExp('https:\/\/www\.youtube\.com\/embed\/([a-zA-Z0-9\_-]){11}');
-                if (regex.test(video)) {
-                    this.props.editWaterBodyHandler(this.state.waterBody);
-                }
-                else {
-                    console.log("please make sure to get the embed code of the youtube video")
-                }
-            }
-            else {
-                console.log("please make sure to get the embed code of youtube videos only")
-            }
-        }
-        else {
-            console.log("please provide a valid image url")
+
+        if(this.state.errors["picture"] == null && this.state.errors["video"] == null && this.state.errors["description"] == null){
+            this.props.editWaterBodyHandler(this.state.waterBody);
         }
     }
 
@@ -78,7 +102,7 @@ export default class EditWaterBody extends Component {
         return (
             <div className="page">
                 <Container>
-                <p className="pageTitle">Edit Water Body</p>
+                    <p className="pageTitle">Edit Water Body</p>
                     <Form onSubmit={this.editWaterBodyHandler}>
                         <Tabs transition={false} defaultActiveKey="picture">
                             <Tab eventKey="picture" title="Picture">
@@ -89,11 +113,11 @@ export default class EditWaterBody extends Component {
                             </Tab>
                         </Tabs>
                         <Form.Group>
-                            <Form.Label>Picture</Form.Label>
+                            <Form.Label>Picture</Form.Label> <span className="error">{this.state.errors["picture"] ? ` ${this.state.errors["picture"]}` : null}</span>
                             <Form.Control type="url" name="picture" onChange={this.changeHandler} value={this.state.image} required></Form.Control>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Video</Form.Label>
+                            <Form.Label>Video</Form.Label> <span className="error">{this.state.errors["video"] ? ` ${this.state.errors["video"]}` : null}</span>
                             <Form.Control type="url" name="video" onChange={this.changeHandler} value={this.state.video} required></Form.Control>
                         </Form.Group>
                         <Form.Group>
@@ -129,7 +153,7 @@ export default class EditWaterBody extends Component {
                             </Form.Control>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Description</Form.Label>
+                            <Form.Label>Description</Form.Label> <span className="error">{this.state.errors["description"] ? ` ${this.state.errors["description"]}` : null}</span>
                             <ReactQuill name="description" theme="snow" onChange={this.editorChangeHandler} value={this.state.waterBody.description}
                                 modules={{
                                     toolbar: [

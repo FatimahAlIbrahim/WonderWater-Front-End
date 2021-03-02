@@ -27,7 +27,7 @@ export default class Login extends Component {
 
     render() {
         return (
-                <Container>
+                <Container className="page">
                     <p className="pageTitle">Login</p>
                     <Form onSubmit={this.loginHandler}>
                         <Form.Group>

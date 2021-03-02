@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Button } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 import { BrowserRouter as Router, Link } from "react-router-dom"
 import safe from './../images/safe.png'
 import dangerous from './../images/dangerous.png'

@@ -51,7 +51,7 @@
 
 @keyframes slide {
     25% {
-        content: url("https://tzassets.bestwestern.com/wp-content/uploads/2017/08/31074141/AdobeStock_45054633.jpeg");
+        content: url("https://www.cheatsheet.com/wp-content/uploads/2017/11/rio-tinto.jpg");
     }
     50% {
         content: url("https://colombia.travel/sites/default/files/xContenido_CaNo_Cristales_02.jpg.pagespeed.ic.xQQ-t2JodO.jpg");
@@ -66,21 +66,24 @@
 
 .cardFlex {
     display: flex;
-    flex-wrap: wrap;
-    padding: .5%;
-    justify-content: center;
+    flex-flow: wrap;
+    justify-content: space-around;
 }
 
 .cards {
-    flex-basis: 30%;
+    width: 30%;
     margin: 1%;
+    height: inherit;
+    align-self: stretch;
 }
 
 .card-img-top {
     margin-top: 5%;
     align-self: center;
     width: 90% !important;
+    height: 30vh !important;
 }
+
 
 a {
     color: #7a2048 !important;
@@ -166,7 +169,8 @@ a:hover {
     border-bottom-right-radius: 1%;
     border-bottom-left-radius: 1%;
     overflow-y: auto;
-    height: 150px;
+    height: fit-content;
+    max-height: 150px;
     padding: .5%;
 }
 
@@ -310,40 +314,62 @@ a:hover {
     margin-bottom: 0px !important; 
 }
 
-.fade-out {
-	opacity: 1;
-	animation-name: fadeInOpacity;
-	animation-iteration-count: 1;
-	animation-timing-function: ease-in;
-	animation-duration: 5.25s;
+.error {
+    color: red;
+    font-size: 1em;
 }
 
-@keyframes fadeInOpacity {
-	0% {
-		opacity: 1;
-	}
-    20% {
-        opacity: 1;
-    }
-    40% {
-        opacity: .8;
-    }
-    60% {
-        opacity: .4;
-    }
-    80% {
-        opacity: .2;
-    }
-	100% {
-		opacity: 0;
-	}
+.filterContainer{
+    display: flex;
+    flex-direction: row;
 }
 
-@media (max-width: 700px) {
+.filter {
+    border: #7a2048 solid thin; 
+    border-radius: 10px;
+    margin-bottom: 2%;
+    padding-bottom: 1.5%;
+}
+
+.filter p{
+    margin-left: 2%;
+    margin-right: 2%;
+    padding-top: 2%;
+    color: #7a2048;
+    font-size: 1.25em;
+    font-weight: 600;
+    border-bottom: solid thin #7a2048;
+}
+
+.filterContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-flow: wrap;
+}
+
+.filterContainer .form-group {
+    width: 30%;
+}
+
+@media screen and (max-width: 1000px) {
     .cards {
-        flex-basis: auto;
-        margin: 2%;
+        width: 45%;
     }
-  }
+
+    .filterContainer .form-group {
+        width: 45%;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .cards {
+        width: 80%;
+    }
+
+    .filterContainer .form-group {
+        width: 80%
+    }
+}
 
 
