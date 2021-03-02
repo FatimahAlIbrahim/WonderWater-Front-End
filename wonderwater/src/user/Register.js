@@ -52,7 +52,6 @@ export default class Register extends Component {
                 userInfo: userInfoTemp
             });
         }
-        console.log(userInfoTemp)
     }
 
     registerHandler = (event) => {

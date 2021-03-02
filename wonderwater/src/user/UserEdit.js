@@ -52,7 +52,6 @@ export default class UserEdit extends Component {
                 userInfo: userInfoTemp
             });
         }
-        console.log(userInfoTemp)
     }
 
     editUserHandler = (event) => {
