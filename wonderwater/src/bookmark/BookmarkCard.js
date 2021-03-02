@@ -35,7 +35,7 @@ export default class BookmarkCard extends Component {
                     <span>{this.props.bookmark[4] ? <img width="16px" src={dangerous} /> : <img width="25px" src={safe} />}</span> {' '}
                         <span>{this.props.bookmark[1] ? <img width="20px" src={swimming} /> : <img width="20px" src={noSwimming} />}</span> {' '}
                         <Router>
-                            <Link to="/waterbody/details">
+                            <Link to="/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/details">
                                 <span onClick={this.showDetails}>{this.props.bookmark[6]} {this.props.bookmark[8]}</span>
                             </Link>
                         </Router>

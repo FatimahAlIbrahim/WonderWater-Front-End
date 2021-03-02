@@ -68,7 +68,7 @@ export default class SearchWaterBodies extends Component {
                         <Router>
                             {this.state.filterResult.map((waterBody, index) =>
                                 <p key={index}>
-                                    <Link to="/waterbody/details" onClick={() => this.handleClick(waterBody)}>{waterBody.name} {waterBody.type}</Link>
+                                    <Link to="/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/details" onClick={() => this.handleClick(waterBody)}>{waterBody.name} {waterBody.type}</Link>
                                 </p>
                             )}
                         </Router>
