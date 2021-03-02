@@ -62,7 +62,7 @@ class App extends Component {
     axios.post(`${process.env.REACT_APP_BACK_END_URL}user/registration`, user)
       .then(response => {
         this.handleAlert("Created an account successfully!","success");
-        this.props.history.push("/fatimah-al-ibrahim/WonderWater-Front-End/login");
+        this.props.history.push("/login");
       })
       .catch(error => {
         this.handleAlert("An error occurred while creating an account. Please try again later","danger");
@@ -123,7 +123,7 @@ class App extends Component {
             userBookmarks: userBookmarksTemp,
           })
           this.handleAlert("Successfully logged in!","success");
-          this.props.history.push("/fatimah-al-ibrahim/WonderWater-Front-End/");
+          this.props.history.push("/");
         }
         else {
           this.setState({
@@ -147,7 +147,7 @@ class App extends Component {
       userData: null,
     })
     this.handleAlert("Successfully logged out!","success");
-    this.props.history.push("/fatimah-al-ibrahim/WonderWater-Front-End/login");
+    this.props.history.push("/login");
   }
 
   addWaterBodyHandler = (waterBody) => {
@@ -158,7 +158,7 @@ class App extends Component {
     })
       .then(response => {
         this.handleAlert("Successfully added a water body!","success");
-        this.props.history.push("/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/index");
+        this.props.history.push("/waterbody/index");
       })
       .catch(error => {
         this.handleAlert("An error occurred while adding the water body. Please try again later","danger");
@@ -169,7 +169,7 @@ class App extends Component {
     this.setState({
       detailWaterBody: waterBody
     })
-    this.props.history.push("/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/details");
+    this.props.history.push("/waterbody/details");
   }
 
   handleAlert = (message, messageType) => {
@@ -188,51 +188,51 @@ class App extends Component {
         {this.state.isAuth ? (
           <div>
             <Navbar collapseOnSelect expand="lg" className="colorBG" variant="dark">
-              <Navbar.Brand as={Link} to="/fatimah-al-ibrahim/WonderWater-Front-End/">Wonder Water</Navbar.Brand>
+              <Navbar.Brand as={Link} to="/">Wonder Water</Navbar.Brand>
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
-                  <Nav.Link as={Link} to="/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/add">Add Water Body</Nav.Link>
-                  <Nav.Link as={Link} to="/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/index">Water Bodies</Nav.Link>
+                  <Nav.Link as={Link} to="/waterbody/add">Add Water Body</Nav.Link>
+                  <Nav.Link as={Link} to="/waterbody/index">Water Bodies</Nav.Link>
                 </Nav>
                 <Nav>
-                  <Nav.Link as={Link} to="/fatimah-al-ibrahim/WonderWater-Front-End/user/profile">Welcome {this.state.userData.emailAddress}</Nav.Link>
-                  <Nav.Link as={Link} to="/fatimah-al-ibrahim/WonderWater-Front-End/logout" onClick={this.logoutHandler}>Logout</Nav.Link>
+                  <Nav.Link as={Link} to="/user/profile">Welcome {this.state.userData.emailAddress}</Nav.Link>
+                  <Nav.Link as={Link} to="/logout" onClick={this.logoutHandler}>Logout</Nav.Link>
                   <SearchWaterBodies handleAlert={this.handleAlert} detailWaterBodyChangeHandler={this.detailWaterBodyChangeHandler}/>
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
 
-            <Route exact path="/fatimah-al-ibrahim/WonderWater-Front-End/" component={Home} />
-            <Route exact path="/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/add" component={() => <AddWaterBody user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
-            <Route exact path="/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/index" component={() => <WaterBodiesIndex handleAlert={this.handleAlert} isAuth={this.state.isAuth} userData={this.state.userData} />} />
-            <Route exact path="/fatimah-al-ibrahim/WonderWater-Front-End/user/profile" component={() => <UserProfile handleAlert={this.handleAlert} isAuth={this.state.isAuth} user={this.state.userData} waterBodies={this.state.userWaterBodies} bookmarks={this.state.userBookmarks} />} />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/waterbody/add" component={() => <AddWaterBody user={this.state.userData} addWaterBodyHandler={this.addWaterBodyHandler} />} />
+            <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex handleAlert={this.handleAlert} isAuth={this.state.isAuth} userData={this.state.userData} />} />
+            <Route exact path="/user/profile" component={() => <UserProfile handleAlert={this.handleAlert} isAuth={this.state.isAuth} user={this.state.userData} waterBodies={this.state.userWaterBodies} bookmarks={this.state.userBookmarks} />} />
           </div>
         ) : (
             <div>
               <Navbar collapseOnSelect expand="lg" className="colorBG" variant="dark">
-                <Navbar.Brand as={Link} to="/fatimah-al-ibrahim/WonderWater-Front-End/"><em><span className="fontSize">W</span>onder<span className="fontSize">W</span>ater</em></Navbar.Brand>
+                <Navbar.Brand as={Link} to="/"><em><span className="fontSize">W</span>onder<span className="fontSize">W</span>ater</em></Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="mr-auto">
-                    <Nav.Link as={Link} to="/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/index">Water Bodies</Nav.Link>
+                    <Nav.Link as={Link} to="/waterbody/index">Water Bodies</Nav.Link>
                   </Nav>
                   <Nav>
-                    <Nav.Link as={Link} to="/fatimah-al-ibrahim/WonderWater-Front-End/register">Register</Nav.Link>
-                    <Nav.Link as={Link} to="/fatimah-al-ibrahim/WonderWater-Front-End/login">Login</Nav.Link>
+                    <Nav.Link as={Link} to="/register">Register</Nav.Link>
+                    <Nav.Link as={Link} to="/login">Login</Nav.Link>
                     <SearchWaterBodies handleAlert={this.handleAlert} detailWaterBodyChangeHandler={this.detailWaterBodyChangeHandler}/>
                   </Nav>
                 </Navbar.Collapse>
               </Navbar>
 
-              <Route exact path="/fatimah-al-ibrahim/WonderWater-Front-End/" component={Home} />
-              <Route exact path="/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/index" component={() => <WaterBodiesIndex handleAlert={this.handleAlert} isAuth={this.state.isAuth} userData={this.state.userData} />} />
-              <Route exact path="/fatimah-al-ibrahim/WonderWater-Front-End/register" component={() => <Register handleAlert={this.handleAlert}registerHandler={this.registerHandler} />} />
-              <Route exact path="/fatimah-al-ibrahim/WonderWater-Front-End/login" component={() => <Login loginHandler={this.loginHandler} />} />
+              <Route exact path="/" component={Home} />
+              <Route exact path="/waterbody/index" component={() => <WaterBodiesIndex handleAlert={this.handleAlert} isAuth={this.state.isAuth} userData={this.state.userData} />} />
+              <Route exact path="/register" component={() => <Register handleAlert={this.handleAlert}registerHandler={this.registerHandler} />} />
+              <Route exact path="/login" component={() => <Login loginHandler={this.loginHandler} />} />
             </div>
           )}
         {this.state.detailWaterBody ?
-          <Route exact path="/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/details" component={() => <WaterBody handleAlert={this.handleAlert} isAuth={this.state.isAuth} user={this.state.userData} waterBody={this.state.detailWaterBody} />} />
+          <Route exact path="/waterbody/details" component={() => <WaterBody handleAlert={this.handleAlert} isAuth={this.state.isAuth} user={this.state.userData} waterBody={this.state.detailWaterBody} />} />
           : null}
       </div>
     )

@@ -133,7 +133,7 @@ export default class WaterBodiesIndex extends Component {
         return (
             <Container className="page">
                 <Router>
-                    {this.state.isIndex ? <Redirect to="/fatimah-al-ibrahim/WonderWater-Front-End/waterbody/index" /> : null}
+                    {this.state.isIndex ? <Redirect to="/waterbody/index" /> : null}
                 </Router>
                 {window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "index" || this.state.isIndex ?
                     <><p className="pageTitle">Water Bodies</p>

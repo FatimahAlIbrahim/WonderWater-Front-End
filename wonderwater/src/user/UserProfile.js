@@ -195,10 +195,10 @@ export default class UserProfile extends Component {
                 <Router>
                     {this.state.allowEditUser ?
                         <>
-                            <Redirect to="/fatimah-al-ibrahim/WonderWater-Front-End/user/userEdit" />
-                            <Route exact path="/fatimah-al-ibrahim/WonderWater-Front-End/user/userEdit" component={() => <UserEdit user={this.state.user} editUserHandler={this.editUserHandler} />} />
+                            <Redirect to="/user/userEdit" />
+                            <Route exact path="/user/userEdit" component={() => <UserEdit user={this.state.user} editUserHandler={this.editUserHandler} />} />
                         </>
-                        : <Redirect to="/fatimah-al-ibrahim/WonderWater-Front-End/user/profile" />}
+                        : <Redirect to="/user/profile" />}
                 </Router>
 
                 {(window.location.href.substr(window.location.href.lastIndexOf("/") + 1) == "profile" || this.state.isProfile) && !this.state.allowEditUser ?
