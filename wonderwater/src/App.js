@@ -8,7 +8,7 @@ import Home from './Home';
 import AddWaterBody from './waterbodies/AddWaterBody';
 import WaterBodiesIndex from './waterbodies/WaterBodiesIndex';
 import UserProfile from './user/UserProfile';
-import { Nav, Navbar, Alert } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 import './App.css'
 import SearchWaterBodies from './waterbodies/SearchWaterBodies';
 import WaterBody from './waterbodies/WaterBody';
