@@ -217,7 +217,7 @@ export default class UserProfile extends Component {
                             <p>Enter your current password and submit to be able to update your information</p>
                             <Form inline onSubmit={this.checkPassword}>
                                 <span>Current Password</span>
-                                <Form.Control placeholder="Enter password here..." onChange={this.onChange} />
+                                <Form.Control type="password" placeholder="Enter password here..." onChange={this.onChange} />
                                 <button type="submit" className="btn-style">Submit</button>
                             </Form>
                         </div>
