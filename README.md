@@ -81,7 +81,7 @@ There are no unsolved problems.
 ---
 
 ### Wireframe:
-![home](images/home-wf.JPG)
+![home](images/home-wf.png)
 ![water body index](images/waterbodyindex-wf.JPG)
 ![register](images/register-wf.JPG)
 ![login](images/login-wf.JPG)
