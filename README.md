@@ -6,6 +6,7 @@ The Front end side of Wonder Water, a website that allows users to share and vie
 - [Back End Side Repo](https://git.generalassemb.ly/fatimah-al-ibrahim/WonderWater-Back-End)
 - [Deployed API](http://wonderwater-env.eba-xrp2ugc4.us-east-2.elasticbeanstalk.com/)
 - [Deployed Client](https://pages.git.generalassemb.ly/fatimah-al-ibrahim/WonderWater-Front-End/)
+- [Video Demo](https://drive.google.com/file/d/1GXWlIwXlusJfPDc4iL4UGMfDa3WebAIt/view?usp=sharing)
 
 ## Planning Story
 
@@ -52,13 +53,39 @@ The Front end side of Wonder Water, a website that allows users to share and vie
 - [React-Quill](https://github.com/zenoamaro/react-quill)
 - [React-Toastify](https://www.npmjs.com/package/react-toastify)
 
+## Installation Instructions
+- Fork and clone or download this repo and the back end repo of this project whose link is at the beginning in the important link
+- Navigate to the react application in the front end.
+- Run the following command to install the packages
+```
+$ npm install
+``` 
+
 ## Unsolved Problems
 There are no unsolved problems.
 
 ## Images
 
-### App Screenshot:
 
+### App Screenshot:
+![home](images/home-sc.png)
+![water body index](images/waterbodyindex-sc.png)
+![water body detail](images/waterbodydetail-sc.png)
+![register](images/register-sc.png)
+![login](images/login-sc.png)
+![add water body](images/addwaterbody-sc.png)
+![edit water body](images/editwaterbody-sc.png)
+![water body details - logged in](images/waterbodydetail2-sc.png)
+![user profile](images/userprofile-sc.png)
+![edit user](images/edituser-sc.png)
 ---
 
 ### Wireframe:
+![home](images/home-wf.JPG)
+![water body index](images/waterbodyindex-wf.JPG)
+![register](images/register-wf.JPG)
+![login](images/login-wf.JPG)
+![add and edit water body](images/addeditwaterbody-wf.png)
+![water body detail](images/waterbodydetail-wf.png)
+![user profile](images/userprofile-wf.JPG)
+![edit user](images/edituser-wf.JPG)
