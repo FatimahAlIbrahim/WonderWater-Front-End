@@ -136,6 +136,7 @@ export default class AddWaterBody extends Component {
                             <option value="spring">Spring</option>
                             <option value="sea">Sea</option>
                             <option value="pool">Pool</option>
+                            <option value="waterfall">Waterfall</option>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group>
